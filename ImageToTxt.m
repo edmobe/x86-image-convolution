@@ -1,0 +1,11 @@
+clear;
+IMAGE = imread("input.jpg");
+width = size(IMAGE)(1);
+height = size(IMAGE)(2);
+SCALED_IMAGE = zeros(width + 2, height + 2);
+SCALED_IMAGE(2:width+1, 2:height+1) = IMAGE;
+SCALED_IMAGE = reshape(SCALED_IMAGE.',1,[]);
+SCALED_IMAGE = uint8(SCALED_IMAGE);
+fid = fopen('input.txt', 'w'); 
+fwrite(fid, SCALED_IMAGE, "char", 'ieee-le');
+fclose(fid);
