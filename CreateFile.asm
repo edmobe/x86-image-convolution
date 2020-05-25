@@ -4,26 +4,34 @@
 INCLUDE Irvine32.inc  
 INCLUDE macros.inc
 
+; ----------------------------- Constants --------------------------------				
+imageMaxWidth = 3900
+imageMaxHeight	= 2200
+imageMaxResolution	= imageMaxWidth * imageMaxHeight					; width x height
+extendedImageMaxSize = (imageMaxWidth + 2) * (imageMaxHeight * 2)	; (width + 2) x (height + 2)
+BUFFER_SIZE_IN	= extendedImageMaxSize + 1
+BUFFER_CONSOLE = 10
 
-BUFFER_SIZE_IN = 1300000			; Read File Buffer
-
-.data
-; Constants to define
-imageWidth = 960
-imageHeight	= 1280
-imageResolution	= 1228800				; width x height
-extendedImageSize = 1223284				; (width + 2) x (height + 2)
+; User console input (image size)
+bufferConsole				BYTE BUFFER_CONSOLE DUP(?), 0, 0
+stdInHandle					HANDLE ?
+bytesRead					DWORD ?
+askForDimensions			BYTE "Insert image dimensions using the structure widthxheight (example: 1920x1080): ",0
 
 ; File read
-imageArray		BYTE BUFFER_SIZE_IN DUP(?) 
+imageArray		BYTE BUFFER_SIZE_IN DUP(0)
 fileNameIn		BYTE "input.txt",0
 fileHandleIn	HANDLE ?
 
 ; Convolution
+imageWidth				WORD ?
 imageWidthExtended		WORD ?
+imageHeight				WORD ?
 imageHeightExtended		WORD ?
+imageResolution			DWORD ?
+extendedImageSize		DWORD ?
 pixelsIn				DWORD ? 
-sharpeningKernel		BYTE imageResolution DUP(0)
+sharpeningKernel		BYTE 9 DUP(0)
 sum						WORD 0
 imageRowCounter			WORD 0
 imageColumnCounter		WORD 0
@@ -36,10 +44,9 @@ imageRowOffset			DWORD 0
 imageColumnOffset		DWORD 0
 sharpenedImageCounter	DWORD 0
 newImage				BYTE 0
-sharpenedImage			BYTE imageResolution DUP(0)
+sharpenedImage			BYTE imageMaxResolution DUP(0)
 
 ; File Write
-bufferOut		BYTE imageResolution DUP(?)
 fileNameOut		BYTE "normSharpened.txt", 0
 fileHandleOut	HANDLE ?
 bytesWrittenOut DWORD ?
@@ -48,6 +55,80 @@ str2Out			BYTE "Bytes written to file: ",0
 
 .code
 main PROC
+; -------------- GET IMAGE DIMENSIONS FROM CONSOLE ------
+; Ask for the input
+mov	edx,OFFSET askForDimensions			
+call	WriteString
+
+; Get handle to standard input
+INVOKE GetStdHandle, STD_INPUT_HANDLE
+mov stdInHandle,eax
+
+; Wait for user input
+INVOKE ReadConsole, stdInHandle, ADDR bufferConsole,
+	BUFFER_CONSOLE, ADDR bytesRead, 0
+
+; Transform the dimensions
+xor esi, esi					; Position in value counter = 0
+xor edi, edi					; Buffer counter = 0
+xor eax, eax					; Dimension container
+xor ebx, ebx					; Char value container
+mov cx, 10						; Multiplier
+
+getImageWidth:
+mov bl, bufferConsole[edi]		; Get actual value in buffer
+cmp bl, 120
+je endWidth
+sub bl, 48						; Get number
+cmp esi, 0
+je updateWidthValue
+mul cx
+updateWidthValue:
+add ax, bx
+inc edi
+inc esi
+jmp getImageWidth
+endWidth:
+mov imageWidth, ax
+xor eax, eax
+xor esi, esi
+inc edi
+
+getImageHeight:
+mov bl, bufferConsole[edi]		; Get actual value in buffer
+cmp bl, 13
+je endHeight
+sub bl, 48						; Get number
+cmp esi, 0
+je updateHeightValue
+mul cx
+updateHeightValue:
+add ax, bx
+inc edi
+inc esi
+jmp getImageHeight
+endHeight:
+; Get amount of pixels
+mov imageHeight, ax
+mov bx, imageWidth
+mul bx
+mov cx, dx
+shl ecx, 16
+add cx, ax
+mov imageResolution, ecx
+; Get amount of pixels (extended)
+mov ax, imageHeight
+mov bx, imageWidth
+add ax, 2
+add bx, 2
+mov imageHeightExtended, ax
+mov imageWidthExtended, bx
+mul bx
+mov cx, dx
+shl ecx, 16
+add cx, ax
+mov extendedImageSize, ecx
+
 ; -------------------- READ FILE ------------------------
 ; Let user input a filename.
 	mov edx,OFFSET fileNameIn
@@ -102,23 +183,19 @@ close_file:
 ; dl: n as in 10^n
 ; bl: actual number
 cld
-mov ax, imageWidth
-mov bx, imageHeight
-add ax, 2
-add bx, 2
-mov imageWidthExtended, ax
-mov imageHeightExtended, bx
+mov ax, imageWidthExtended
+mov bx, imageHeightExtended
 mul bx
 mov bx, dx
 shl ebx, 16
 mov bx, ax
 mov pixelsIn, ebx					; pixelIn = (width+2)x(height+2)
-mov esi, 0							; esi: counter
-mov edi, 0							; edi: pixel counter
-mov eax, 0							
-mov ebx, 0							
-mov ecx, 0							
-mov edx, 0							
+xor esi, esi						; esi: counter
+xor edi, edi						; edi: pixel counter
+xor eax, eax							
+xor ebx, ebx							
+xor ecx, ecx							
+xor edx, edx							
 
 ; ----------------------- CONVOLUTION -------------------------
 convolution:
@@ -138,7 +215,7 @@ new_kernel_row:
 	add ebx, imageRowOffset
 	add ebx, imageColumnOffset
 	mov cl, [imageArray + ebx]
-	mov edx, 0
+	xor edx, edx
 	mov dl, kernelCounter
 	mov al, [sharpeningKernel + edx]
 	cbw 
@@ -157,7 +234,7 @@ new_kernel_column:
 	je new_image_row
 	mov kernelRowOffset, 0
 	mov kernelRowCounter, 0
-	mov eax, 0
+	xor eax, eax
 	mov ax, imageWidthExtended
 	add kernelColumnOffset, eax
 	jmp new_kernel_row
@@ -177,10 +254,10 @@ less_than_zero:
 over_255:
 	mov sharpenedImage[ebx], 255
 sum_stored:
-	mov eax, 0
-	mov ebx, 0
-	mov ecx, 0
-	mov edx, 0
+	xor eax, eax
+	xor ebx, ebx
+	xor ecx, ecx
+	xor edx, edx
 	mov kernelRowOffset, 0
 	mov kernelColumnOffset, 0
 	mov kernelRowCounter, 0
@@ -201,7 +278,7 @@ new_image_column:
 	je sharpened
 	mov imageRowCounter, 0
 	mov imageRowOffset, 0
-	mov eax, 0
+	xor eax, eax
 	mov ax, imageWidthExtended
 	add imageColumnOffset, eax
 	jmp new_kernel_row
@@ -235,8 +312,8 @@ file_out_ok:
 	mov	eax,bytesWrittenOut
 	call	WriteDec
 	call	Crlf
-
 	@
+
 	; Do the same process for oversharpening
 	cmp newImage, 1
 	je quit
@@ -256,12 +333,12 @@ file_out_ok:
 	mov sharpeningKernel[7], -2
 	mov sharpeningKernel[8], 0
 	; Reset all convolution values
-	mov eax, 0
-	mov ebx, 0
-	mov ecx, 0
-	mov edx, 0
-	mov edi, 0
-	mov esi, 0
+	xor eax, eax
+	xor ebx, ebx
+	xor ecx, ecx
+	xor edx, edx
+	xor edi, edi
+	xor esi, esi
 	mov sum, 0
 	mov imageRowCounter, 0
 	mov imageColumnCounter, 0
@@ -273,6 +350,7 @@ file_out_ok:
 	mov imageRowOffset, 0
 	mov imageColumnOffset, 0
 	mov sharpenedImageCounter, 0
+	mov bytesWrittenOut, 0
 	jmp new_kernel_row
 
 quit:
