@@ -1,5 +1,6 @@
 function txtToImage(imageWidth, imageHeight)
-  disp("Transforming binary .txt files to images and saving them in OutputImages folder...");
+  disp("Transforming binary .txt files to images and saving them in ");
+  disp("OutputImages folder...");
   size = imageWidth * imageHeight;
   % Original
   fid = fopen('input.txt', 'r', 'ieee-le');

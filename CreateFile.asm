@@ -12,11 +12,12 @@ extendedImageMaxSize = (imageMaxWidth + 2) * (imageMaxHeight * 2)	; (width + 2) 
 BUFFER_SIZE_IN	= extendedImageMaxSize + 1
 BUFFER_CONSOLE = 10
 
+.data
 ; User console input (image size)
 bufferConsole				BYTE BUFFER_CONSOLE DUP(?), 0, 0
 stdInHandle					HANDLE ?
 bytesRead					DWORD ?
-askForDimensions			BYTE "Insert image dimensions using the structure widthxheight (example: 1920x1080): ",0
+askForDimensions			BYTE "Insert image dimensions (example: 1920x1080): ",0
 
 ; File read
 imageArray		BYTE BUFFER_SIZE_IN DUP(0)
@@ -55,6 +56,26 @@ str2Out			BYTE "Bytes written to file: ",0
 
 .code
 main PROC
+; ----------------------- COVER -------------------------
+mWrite <"----------------------------------------------------------",0dh,0ah>
+mWrite <"TECNOLOGICO DE COSTA RICA",0dh,0ah>
+mWrite <" ",0dh,0ah>
+mWrite <"COMPUTER ENGINEERING ACADEMIC AREA",0dh,0ah>
+mWrite <"Computer Architecture I",0dh,0ah>
+mWrite <" ",0dh,0ah>
+mWrite <"INDIVIDUAL PROJECT #1",0dh,0ah>
+mWrite <"Image convolution in assembly",0dh,0ah>
+mWrite <" ",0dh,0ah>
+mWrite <"STUDENT: Eduardo Moya Bello",0dh,0ah>
+mWrite <"TEACHER: Eng. Luis Chavarria Zamora",0dh,0ah>
+mWrite <" ",0dh,0ah>
+mWrite <"Date: 29, May 2020",0dh,0ah>
+mWrite <"----------------------------------------------------------",0dh,0ah>
+mWrite <"This program sharpens and oversharpens an image",0dh,0ah>
+mWrite <"Maximum dimensions: 3900x2200 (width x height)",0dh,0ah>
+mWrite <"----------------------------------------------------------",0dh,0ah>
+
+
 ; -------------- GET IMAGE DIMENSIONS FROM CONSOLE ------
 ; Ask for the input
 mov	edx,OFFSET askForDimensions			
@@ -165,12 +186,6 @@ buf_size_ok:
 	mov imageArray[eax],0 ; insert null terminator
 	mWrite "File size: "
 	call WriteDec ; display file size
-	call Crlf
-
-; Display the buffer.
-	mWrite <"Buffer:",0dh,0ah,0dh,0ah>
-	mov edx,OFFSET imageArray ; display the buffer
-	call WriteString
 	call Crlf
 
 close_file:
@@ -304,15 +319,6 @@ file_out_ok:
 	call	WriteToFile
 	mov	bytesWrittenOut,eax		; save return value
 	call	CloseFile
-	
-	COMMENT @
-; Display the return value.
-	mov	edx,OFFSET str2Out		; "Bytes written"
-	call	WriteString
-	mov	eax,bytesWrittenOut
-	call	WriteDec
-	call	Crlf
-	@
 
 	; Do the same process for oversharpening
 	cmp newImage, 1
@@ -354,6 +360,8 @@ file_out_ok:
 	jmp new_kernel_row
 
 quit:
+	mWrite <"Sharpening and oversharpening successful!",0dh,0ah>
+	mWrite <"----------------------------------------------------------",0dh,0ah>
 	exit
 main ENDP
 END main

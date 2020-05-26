@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/25/20 01:27:03
+Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/26/20 02:04:17
 CreateFile.asm						     Page 1 - 1
 
 
@@ -43,72 +43,65 @@ CreateFile.asm						     Page 1 - 1
 	   ] 00 00
  0000000C 00000000		stdInHandle					HANDLE ?
  00000010 00000000		bytesRead					DWORD ?
- 00000014 49 6E 73 65 72	askForDimensions			BYTE "Insert image dimensions using the structure <width>x<height> (example: 640x480): ",0
+ 00000014 49 6E 73 65 72	askForDimensions			BYTE "Insert image dimensions (example: 1920x1080): ",0
 	   74 20 69 6D 61
 	   67 65 20 64 69
 	   6D 65 6E 73 69
-	   6F 6E 73 20 75
-	   73 69 6E 67 20
-	   74 68 65 20 73
-	   74 72 75 63 74
-	   75 72 65 20 3C
-	   77 69 64 74 68
-	   3E 78 3C 68 65
-	   69 67 68 74 3E
-	   20 28 65 78 61
-	   6D 70 6C 65 3A
-	   20 36 34 30 78
-	   34 38 30 29 3A
+	   6F 6E 73 20 28
+	   65 78 61 6D 70
+	   6C 65 3A 20 31
+	   39 32 30 78 31
+	   30 38 30 29 3A
 	   20 00
 
 				; File read
- 00000066  0105F9A1 [		imageArray		BYTE BUFFER_SIZE_IN DUP(0)
+ 00000043  0105F9A1 [		imageArray		BYTE BUFFER_SIZE_IN DUP(0)
 	    00
 	   ]
- 0105FA07 69 6E 70 75 74	fileNameIn		BYTE "input.txt",0
+ 0105F9E4 69 6E 70 75 74	fileNameIn		BYTE "input.txt",0
 	   2E 74 78 74 00
- 0105FA11 00000000		fileHandleIn	HANDLE ?
+ 0105F9EE 00000000		fileHandleIn	HANDLE ?
 
 				; Convolution
- 0105FA15 0000			imageWidth				WORD ?
- 0105FA17 0000			imageWidthExtended		WORD ?
- 0105FA19 0000			imageHeight				WORD ?
- 0105FA1B 0000			imageHeightExtended		WORD ?
- 0105FA1D 00000000		imageResolution			DWORD ?
- 0105FA21 00000000		extendedImageSize		DWORD ?
- 0105FA25 00000000		pixelsIn				DWORD ? 
- 0105FA29  00000009 [		sharpeningKernel		BYTE 9 DUP(0)
+ 0105F9F2 0000			imageWidth				WORD ?
+ 0105F9F4 0000			imageWidthExtended		WORD ?
+ 0105F9F6 0000			imageHeight				WORD ?
+ 0105F9F8 0000			imageHeightExtended		WORD ?
+ 0105F9FA 00000000		imageResolution			DWORD ?
+ 0105F9FE 00000000		extendedImageSize		DWORD ?
+ 0105FA02 00000000		pixelsIn				DWORD ? 
+ 0105FA06  00000009 [		sharpeningKernel		BYTE 9 DUP(0)
 	    00
 	   ]
- 0105FA32 0000			sum						WORD 0
- 0105FA34 0000			imageRowCounter			WORD 0
- 0105FA36 0000			imageColumnCounter		WORD 0
- 0105FA38 00			kernelRowCounter		BYTE 0
- 0105FA39 00			kernelColumnCounter		BYTE 0
- 0105FA3A 00			kernelCounter			BYTE 0
- 0105FA3B 00000000		kernelRowOffset			DWORD 0
- 0105FA3F 00000000		kernelColumnOffset		DWORD 0
- 0105FA43 00000000		imageRowOffset			DWORD 0
- 0105FA47 00000000		imageColumnOffset		DWORD 0
- 0105FA4B 00000000		sharpenedImageCounter	DWORD 0
- 0105FA4F 00			newImage				BYTE 0
- 0105FA50  0082EBA0 [		sharpenedImage			BYTE imageMaxResolution DUP(0)
+ 0105FA0F 0000			sum						WORD 0
+ 0105FA11 0000			imageRowCounter			WORD 0
+ 0105FA13 0000			imageColumnCounter		WORD 0
+ 0105FA15 00			kernelRowCounter		BYTE 0
+ 0105FA16 00			kernelColumnCounter		BYTE 0
+ 0105FA17 00			kernelCounter			BYTE 0
+ 0105FA18 00000000		kernelRowOffset			DWORD 0
+ 0105FA1C 00000000		kernelColumnOffset		DWORD 0
+ 0105FA20 00000000		imageRowOffset			DWORD 0
+ 0105FA24 00000000		imageColumnOffset		DWORD 0
+ 0105FA28 00000000		sharpenedImageCounter	DWORD 0
+ 0105FA2C 00			newImage				BYTE 0
+ 0105FA2D  0082EBA0 [		sharpenedImage			BYTE imageMaxResolution DUP(0)
 	    00
 	   ]
 
 				; File Write
- 0188E5F0 6E 6F 72 6D 53	fileNameOut		BYTE "normSharpened.txt", 0
+ 0188E5CD 6E 6F 72 6D 53	fileNameOut		BYTE "normSharpened.txt", 0
 	   68 61 72 70 65
 	   6E 65 64 2E 74
 	   78 74 00
- 0188E602 00000000		fileHandleOut	HANDLE ?
- 0188E606 00000000		bytesWrittenOut DWORD ?
- 0188E60A 43 61 6E 6E 6F	str1Out			BYTE "Cannot create file",0dh,0ah,0	
+ 0188E5DF 00000000		fileHandleOut	HANDLE ?
+ 0188E5E3 00000000		bytesWrittenOut DWORD ?
+ 0188E5E7 43 61 6E 6E 6F	str1Out			BYTE "Cannot create file",0dh,0ah,0	
 	   74 20 63 72 65
 	   61 74 65 20 66
 	   69 6C 65 0D 0A
 	   00
- 0188E61F 42 79 74 65 73	str2Out			BYTE "Bytes written to file: ",0
+ 0188E5FC 42 79 74 65 73	str2Out			BYTE "Bytes written to file: ",0
 	   20 77 72 69 74
 	   74 65 6E 20 74
 	   6F 20 66 69 6C
@@ -116,148 +109,384 @@ CreateFile.asm						     Page 1 - 1
 
  00000000			.code
  00000000			main PROC
+				; ----------------------- COVER -------------------------
+				mWrite <"----------------------------------------------------------",0dh,0ah>
+ 0188E614		     1		.data		
+ 0188E614 2D 2D 2D 2D 2D     1		??0000 BYTE "----------------------------------------------------------",0dh,0ah,0	
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 0D 0A
+	   00
+ 00000000		     1		.code
+ 00000000  52		     1		push	edx
+ 00000001  BA 0188E614 R     1		mov	edx,OFFSET ??0000
+ 00000006  E8 00000000 E     1		call	WriteString
+ 0000000B  5A		     1		pop	edx
+				mWrite <"TECNOLOGICO DE COSTA RICA",0dh,0ah>
+ 0188E651		     1		.data		
+ 0188E651 54 45 43 4E 4F     1		??0001 BYTE "TECNOLOGICO DE COSTA RICA",0dh,0ah,0	
+	   4C 4F 47 49 43
+	   4F 20 44 45 20
+	   43 4F 53 54 41
+	   20 52 49 43 41
+	   0D 0A 00
+ 0000000C		     1		.code
+ 0000000C  52		     1		push	edx
+ 0000000D  BA 0188E651 R     1		mov	edx,OFFSET ??0001
+ 00000012  E8 00000000 E     1		call	WriteString
+ 00000017  5A		     1		pop	edx
+				mWrite <" ",0dh,0ah>
+ 0188E66D		     1		.data		
+ 0188E66D 20 0D 0A 00	     1		??0002 BYTE " ",0dh,0ah,0	
+ 00000018		     1		.code
+ 00000018  52		     1		push	edx
+ 00000019  BA 0188E66D R     1		mov	edx,OFFSET ??0002
+ 0000001E  E8 00000000 E     1		call	WriteString
+ 00000023  5A		     1		pop	edx
+				mWrite <"COMPUTER ENGINEERING ACADEMIC AREA",0dh,0ah>
+ 0188E671		     1		.data		
+ 0188E671 43 4F 4D 50 55     1		??0003 BYTE "COMPUTER ENGINEERING ACADEMIC AREA",0dh,0ah,0	
+	   54 45 52 20 45
+	   4E 47 49 4E 45
+	   45 52 49 4E 47
+	   20 41 43 41 44
+	   45 4D 49 43 20
+	   41 52 45 41 0D
+	   0A 00
+ 00000024		     1		.code
+ 00000024  52		     1		push	edx
+ 00000025  BA 0188E671 R     1		mov	edx,OFFSET ??0003
+ 0000002A  E8 00000000 E     1		call	WriteString
+ 0000002F  5A		     1		pop	edx
+				mWrite <"Computer Architecture I",0dh,0ah>
+ 0188E696		     1		.data		
+ 0188E696 43 6F 6D 70 75     1		??0004 BYTE "Computer Architecture I",0dh,0ah,0	
+	   74 65 72 20 41
+	   72 63 68 69 74
+	   65 63 74 75 72
+	   65 20 49 0D 0A
+	   00
+ 00000030		     1		.code
+ 00000030  52		     1		push	edx
+ 00000031  BA 0188E696 R     1		mov	edx,OFFSET ??0004
+ 00000036  E8 00000000 E     1		call	WriteString
+ 0000003B  5A		     1		pop	edx
+				mWrite <" ",0dh,0ah>
+ 0188E6B0		     1		.data		
+ 0188E6B0 20 0D 0A 00	     1		??0005 BYTE " ",0dh,0ah,0	
+ 0000003C		     1		.code
+ 0000003C  52		     1		push	edx
+ 0000003D  BA 0188E6B0 R     1		mov	edx,OFFSET ??0005
+ 00000042  E8 00000000 E     1		call	WriteString
+ 00000047  5A		     1		pop	edx
+				mWrite <"INDIVIDUAL PROJECT #1",0dh,0ah>
+ 0188E6B4		     1		.data		
+ 0188E6B4 49 4E 44 49 56     1		??0006 BYTE "INDIVIDUAL PROJECT #1",0dh,0ah,0	
+	   49 44 55 41 4C
+	   20 50 52 4F 4A
+	   45 43 54 20 23
+	   31 0D 0A 00
+ 00000048		     1		.code
+ 00000048  52		     1		push	edx
+ 00000049  BA 0188E6B4 R     1		mov	edx,OFFSET ??0006
+ 0000004E  E8 00000000 E     1		call	WriteString
+ 00000053  5A		     1		pop	edx
+				mWrite <"Image convolution in assembly",0dh,0ah>
+ 0188E6CC		     1		.data		
+ 0188E6CC 49 6D 61 67 65     1		??0007 BYTE "Image convolution in assembly",0dh,0ah,0	
+	   20 63 6F 6E 76
+	   6F 6C 75 74 69
+	   6F 6E 20 69 6E
+	   20 61 73 73 65
+	   6D 62 6C 79 0D
+	   0A 00
+ 00000054		     1		.code
+ 00000054  52		     1		push	edx
+ 00000055  BA 0188E6CC R     1		mov	edx,OFFSET ??0007
+ 0000005A  E8 00000000 E     1		call	WriteString
+ 0000005F  5A		     1		pop	edx
+				mWrite <" ",0dh,0ah>
+ 0188E6EC		     1		.data		
+ 0188E6EC 20 0D 0A 00	     1		??0008 BYTE " ",0dh,0ah,0	
+ 00000060		     1		.code
+ 00000060  52		     1		push	edx
+ 00000061  BA 0188E6EC R     1		mov	edx,OFFSET ??0008
+ 00000066  E8 00000000 E     1		call	WriteString
+ 0000006B  5A		     1		pop	edx
+				mWrite <"STUDENT: Eduardo Moya Bello",0dh,0ah>
+ 0188E6F0		     1		.data		
+ 0188E6F0 53 54 55 44 45     1		??0009 BYTE "STUDENT: Eduardo Moya Bello",0dh,0ah,0	
+	   4E 54 3A 20 45
+	   64 75 61 72 64
+	   6F 20 4D 6F 79
+	   61 20 42 65 6C
+	   6C 6F 0D 0A 00
+ 0000006C		     1		.code
+ 0000006C  52		     1		push	edx
+ 0000006D  BA 0188E6F0 R     1		mov	edx,OFFSET ??0009
+ 00000072  E8 00000000 E     1		call	WriteString
+ 00000077  5A		     1		pop	edx
+				mWrite <"TEACHER: Eng. Luis Chavarria Zamora",0dh,0ah>
+ 0188E70E		     1		.data		
+ 0188E70E 54 45 41 43 48     1		??000A BYTE "TEACHER: Eng. Luis Chavarria Zamora",0dh,0ah,0	
+	   45 52 3A 20 45
+	   6E 67 2E 20 4C
+	   75 69 73 20 43
+	   68 61 76 61 72
+	   72 69 61 20 5A
+	   61 6D 6F 72 61
+	   0D 0A 00
+ 00000078		     1		.code
+ 00000078  52		     1		push	edx
+ 00000079  BA 0188E70E R     1		mov	edx,OFFSET ??000A
+ 0000007E  E8 00000000 E     1		call	WriteString
+ 00000083  5A		     1		pop	edx
+				mWrite <" ",0dh,0ah>
+ 0188E734		     1		.data		
+ 0188E734 20 0D 0A 00	     1		??000B BYTE " ",0dh,0ah,0	
+ 00000084		     1		.code
+ 00000084  52		     1		push	edx
+ 00000085  BA 0188E734 R     1		mov	edx,OFFSET ??000B
+ 0000008A  E8 00000000 E     1		call	WriteString
+ 0000008F  5A		     1		pop	edx
+				mWrite <"Date: 29, May 2020",0dh,0ah>
+ 0188E738		     1		.data		
+ 0188E738 44 61 74 65 3A     1		??000C BYTE "Date: 29, May 2020",0dh,0ah,0	
+	   20 32 39 2C 20
+	   4D 61 79 20 32
+	   30 32 30 0D 0A
+	   00
+ 00000090		     1		.code
+ 00000090  52		     1		push	edx
+ 00000091  BA 0188E738 R     1		mov	edx,OFFSET ??000C
+ 00000096  E8 00000000 E     1		call	WriteString
+ 0000009B  5A		     1		pop	edx
+				mWrite <"----------------------------------------------------------",0dh,0ah>
+ 0188E74D		     1		.data		
+ 0188E74D 2D 2D 2D 2D 2D     1		??000D BYTE "----------------------------------------------------------",0dh,0ah,0	
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 0D 0A
+	   00
+ 0000009C		     1		.code
+ 0000009C  52		     1		push	edx
+ 0000009D  BA 0188E74D R     1		mov	edx,OFFSET ??000D
+ 000000A2  E8 00000000 E     1		call	WriteString
+ 000000A7  5A		     1		pop	edx
+				mWrite <"This program sharpens and oversharpens an image",0dh,0ah>
+ 0188E78A		     1		.data		
+ 0188E78A 54 68 69 73 20     1		??000E BYTE "This program sharpens and oversharpens an image",0dh,0ah,0	
+	   70 72 6F 67 72
+	   61 6D 20 73 68
+	   61 72 70 65 6E
+	   73 20 61 6E 64
+	   20 6F 76 65 72
+	   73 68 61 72 70
+	   65 6E 73 20 61
+	   6E 20 69 6D 61
+	   67 65 0D 0A 00
+ 000000A8		     1		.code
+ 000000A8  52		     1		push	edx
+ 000000A9  BA 0188E78A R     1		mov	edx,OFFSET ??000E
+ 000000AE  E8 00000000 E     1		call	WriteString
+ 000000B3  5A		     1		pop	edx
+				mWrite <"Maximum dimensions: 3900x2200 (width x height)",0dh,0ah>
+ 0188E7BC		     1		.data		
+ 0188E7BC 4D 61 78 69 6D     1		??000F BYTE "Maximum dimensions: 3900x2200 (width x height)",0dh,0ah,0	
+	   75 6D 20 64 69
+	   6D 65 6E 73 69
+	   6F 6E 73 3A 20
+	   33 39 30 30 78
+	   32 32 30 30 20
+	   28 77 69 64 74
+	   68 20 78 20 68
+	   65 69 67 68 74
+	   29 0D 0A 00
+ 000000B4		     1		.code
+ 000000B4  52		     1		push	edx
+ 000000B5  BA 0188E7BC R     1		mov	edx,OFFSET ??000F
+ 000000BA  E8 00000000 E     1		call	WriteString
+ 000000BF  5A		     1		pop	edx
+				mWrite <"----------------------------------------------------------",0dh,0ah>
+ 0188E7ED		     1		.data		
+ 0188E7ED 2D 2D 2D 2D 2D     1		??0010 BYTE "----------------------------------------------------------",0dh,0ah,0	
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 0D 0A
+	   00
+ 000000C0		     1		.code
+ 000000C0  52		     1		push	edx
+ 000000C1  BA 0188E7ED R     1		mov	edx,OFFSET ??0010
+ 000000C6  E8 00000000 E     1		call	WriteString
+ 000000CB  5A		     1		pop	edx
+
+
 				; -------------- GET IMAGE DIMENSIONS FROM CONSOLE ------
 				; Ask for the input
- 00000000  BA 00000014 R	mov	edx,OFFSET askForDimensions			
- 00000005  E8 00000000 E	call	WriteString
+ 000000CC  BA 00000014 R	mov	edx,OFFSET askForDimensions			
+ 000000D1  E8 00000000 E	call	WriteString
 
 				; Get handle to standard input
 				INVOKE GetStdHandle, STD_INPUT_HANDLE
- 0000000A  6A F6	   *	    push    -00000000Ah
- 0000000C  E8 00000000 E   *	    call   GetStdHandle
- 00000011  A3 0000000C R	mov stdInHandle,eax
+ 000000D6  6A F6	   *	    push    -00000000Ah
+ 000000D8  E8 00000000 E   *	    call   GetStdHandle
+ 000000DD  A3 0000000C R	mov stdInHandle,eax
 
 				; Wait for user input
 				INVOKE ReadConsole, stdInHandle, ADDR bufferConsole,
 					BUFFER_CONSOLE, ADDR bytesRead, 0
- 00000016  6A 00	   *	    push   +000000000h
- 00000018  68 00000010 R   *	    push   OFFSET bytesRead
- 0000001D  6A 0A	   *	    push   +00000000Ah
- 0000001F  68 00000000 R   *	    push   OFFSET bufferConsole
- 00000024  FF 35 0000000C R *	    push   stdInHandle
- 0000002A  E8 00000000 E   *	    call   ReadConsoleA
+ 000000E2  6A 00	   *	    push   +000000000h
+ 000000E4  68 00000010 R   *	    push   OFFSET bytesRead
+ 000000E9  6A 0A	   *	    push   +00000000Ah
+ 000000EB  68 00000000 R   *	    push   OFFSET bufferConsole
+ 000000F0  FF 35 0000000C R *	    push   stdInHandle
+ 000000F6  E8 00000000 E   *	    call   ReadConsoleA
 
 				; Transform the dimensions
- 0000002F  33 F6		xor esi, esi					; Position in value counter = 0
- 00000031  33 FF		xor edi, edi					; Buffer counter = 0
- 00000033  33 C0		xor eax, eax					; Dimension container
- 00000035  33 DB		xor ebx, ebx					; Char value container
- 00000037  66| B9 000A		mov cx, 10						; Multiplier
+ 000000FB  33 F6		xor esi, esi					; Position in value counter = 0
+ 000000FD  33 FF		xor edi, edi					; Buffer counter = 0
+ 000000FF  33 C0		xor eax, eax					; Dimension container
+ 00000101  33 DB		xor ebx, ebx					; Char value container
+ 00000103  66| B9 000A		mov cx, 10						; Multiplier
 
- 0000003B			getImageWidth:
- 0000003B  8A 9F 00000000 R	mov bl, bufferConsole[edi]		; Get actual value in buffer
- 00000041  80 FB 78		cmp bl, 120
- 00000044  74 12		je endWidth
- 00000046  80 EB 30		sub bl, 48						; Get number
- 00000049  83 FE 00		cmp esi, 0
- 0000004C  74 03		je updateWidthValue
- 0000004E  66| F7 E1		mul cx
- 00000051			updateWidthValue:
- 00000051  66| 03 C3		add ax, bx
- 00000054  47			inc edi
- 00000055  46			inc esi
- 00000056  EB E3		jmp getImageWidth
- 00000058			endWidth:
- 00000058  66| A3		mov imageWidth, ax
-	   0105FA15 R
- 0000005E  33 C0		xor eax, eax
- 00000060  33 F6		xor esi, esi
- 00000062  47			inc edi
+ 00000107			getImageWidth:
+ 00000107  8A 9F 00000000 R	mov bl, bufferConsole[edi]		; Get actual value in buffer
+ 0000010D  80 FB 78		cmp bl, 120
+ 00000110  74 12		je endWidth
+ 00000112  80 EB 30		sub bl, 48						; Get number
+ 00000115  83 FE 00		cmp esi, 0
+ 00000118  74 03		je updateWidthValue
+ 0000011A  66| F7 E1		mul cx
+ 0000011D			updateWidthValue:
+ 0000011D  66| 03 C3		add ax, bx
+ 00000120  47			inc edi
+ 00000121  46			inc esi
+ 00000122  EB E3		jmp getImageWidth
+ 00000124			endWidth:
+ 00000124  66| A3		mov imageWidth, ax
+	   0105F9F2 R
+ 0000012A  33 C0		xor eax, eax
+ 0000012C  33 F6		xor esi, esi
+ 0000012E  47			inc edi
 
- 00000063			getImageHeight:
- 00000063  8A 9F 00000000 R	mov bl, bufferConsole[edi]		; Get actual value in buffer
- 00000069  80 FB 0D		cmp bl, 13
- 0000006C  74 12		je endHeight
- 0000006E  80 EB 30		sub bl, 48						; Get number
- 00000071  83 FE 00		cmp esi, 0
- 00000074  74 03		je updateHeightValue
- 00000076  66| F7 E1		mul cx
- 00000079			updateHeightValue:
- 00000079  66| 03 C3		add ax, bx
- 0000007C  47			inc edi
- 0000007D  46			inc esi
- 0000007E  EB E3		jmp getImageHeight
- 00000080			endHeight:
+ 0000012F			getImageHeight:
+ 0000012F  8A 9F 00000000 R	mov bl, bufferConsole[edi]		; Get actual value in buffer
+ 00000135  80 FB 0D		cmp bl, 13
+ 00000138  74 12		je endHeight
+ 0000013A  80 EB 30		sub bl, 48						; Get number
+ 0000013D  83 FE 00		cmp esi, 0
+ 00000140  74 03		je updateHeightValue
+ 00000142  66| F7 E1		mul cx
+ 00000145			updateHeightValue:
+ 00000145  66| 03 C3		add ax, bx
+ 00000148  47			inc edi
+ 00000149  46			inc esi
+ 0000014A  EB E3		jmp getImageHeight
+ 0000014C			endHeight:
 				; Get amount of pixels
- 00000080  66| A3		mov imageHeight, ax
-	   0105FA19 R
- 00000086  66| 8B 1D		mov bx, imageWidth
-	   0105FA15 R
- 0000008D  66| F7 E3		mul bx
- 00000090  66| 8B CA		mov cx, dx
- 00000093  C1 E1 10		shl ecx, 16
- 00000096  66| 03 C8		add cx, ax
- 00000099  89 0D 0105FA1D R	mov imageResolution, ecx
+ 0000014C  66| A3		mov imageHeight, ax
+	   0105F9F6 R
+ 00000152  66| 8B 1D		mov bx, imageWidth
+	   0105F9F2 R
+ 00000159  66| F7 E3		mul bx
+ 0000015C  66| 8B CA		mov cx, dx
+ 0000015F  C1 E1 10		shl ecx, 16
+ 00000162  66| 03 C8		add cx, ax
+ 00000165  89 0D 0105F9FA R	mov imageResolution, ecx
 				; Get amount of pixels (extended)
- 0000009F  66| A1		mov ax, imageHeight
-	   0105FA19 R
- 000000A5  66| 8B 1D		mov bx, imageWidth
-	   0105FA15 R
- 000000AC  66| 83 C0 02		add ax, 2
- 000000B0  66| 83 C3 02		add bx, 2
- 000000B4  66| A3		mov imageHeightExtended, ax
-	   0105FA1B R
- 000000BA  66| 89 1D		mov imageWidthExtended, bx
-	   0105FA17 R
- 000000C1  66| F7 E3		mul bx
- 000000C4  66| 8B CA		mov cx, dx
- 000000C7  C1 E1 10		shl ecx, 16
- 000000CA  66| 03 C8		add cx, ax
- 000000CD  89 0D 0105FA21 R	mov extendedImageSize, ecx
+ 0000016B  66| A1		mov ax, imageHeight
+	   0105F9F6 R
+ 00000171  66| 8B 1D		mov bx, imageWidth
+	   0105F9F2 R
+ 00000178  66| 83 C0 02		add ax, 2
+ 0000017C  66| 83 C3 02		add bx, 2
+ 00000180  66| A3		mov imageHeightExtended, ax
+	   0105F9F8 R
+ 00000186  66| 89 1D		mov imageWidthExtended, bx
+	   0105F9F4 R
+ 0000018D  66| F7 E3		mul bx
+ 00000190  66| 8B CA		mov cx, dx
+ 00000193  C1 E1 10		shl ecx, 16
+ 00000196  66| 03 C8		add cx, ax
+ 00000199  89 0D 0105F9FE R	mov extendedImageSize, ecx
 
 				; -------------------- READ FILE ------------------------
 				; Let user input a filename.
- 000000D3  BA 0105FA07 R		mov edx,OFFSET fileNameIn
- 000000D8  B9 0000000A			mov ecx,SIZEOF fileNameIn
+ 0000019F  BA 0105F9E4 R		mov edx,OFFSET fileNameIn
+ 000001A4  B9 0000000A			mov ecx,SIZEOF fileNameIn
 
 				; Open the file for input.
- 000000DD  BA 0105FA07 R		mov edx,OFFSET fileNameIn
- 000000E2  E8 00000000 E		call OpenInputFile
- 000000E7  A3 0105FA11 R		mov fileHandleIn,eax
+ 000001A9  BA 0105F9E4 R		mov edx,OFFSET fileNameIn
+ 000001AE  E8 00000000 E		call OpenInputFile
+ 000001B3  A3 0105F9EE R		mov fileHandleIn,eax
 
 				; Check for errors.
- 000000EC  83 F8 FF			cmp eax,INVALID_HANDLE_VALUE ; error opening file?
- 000000EF  75 11			jne file_ok_in ; no: skip
+ 000001B8  83 F8 FF			cmp eax,INVALID_HANDLE_VALUE ; error opening file?
+ 000001BB  75 11			jne file_ok_in ; no: skip
 					mWrite <"Cannot open file",0dh,0ah>
- 0188E637		     1		.data		
- 0188E637 43 61 6E 6E 6F     1		??0000 BYTE "Cannot open file",0dh,0ah,0	
+ 0188E82A		     1		.data		
+ 0188E82A 43 61 6E 6E 6F     1		??0011 BYTE "Cannot open file",0dh,0ah,0	
 	   74 20 6F 70 65
 	   6E 20 66 69 6C
 	   65 0D 0A 00
- 000000F1		     1		.code
- 000000F1  52		     1		push	edx
- 000000F2  BA 0188E637 R     1		mov	edx,OFFSET ??0000
- 000000F7  E8 00000000 E     1		call	WriteString
- 000000FC  5A		     1		pop	edx
- 000000FD  E9 0000036A			jmp quit ; and quit
+ 000001BD		     1		.code
+ 000001BD  52		     1		push	edx
+ 000001BE  BA 0188E82A R     1		mov	edx,OFFSET ??0011
+ 000001C3  E8 00000000 E     1		call	WriteString
+ 000001C8  5A		     1		pop	edx
+ 000001C9  E9 0000034F			jmp quit ; and quit
 					
- 00000102			file_ok_in:
+ 000001CE			file_ok_in:
 				; Read the file into a buffer.
- 00000102  BA 00000066 R		mov edx,OFFSET imageArray
- 00000107  B9 0105F9A1			mov ecx,BUFFER_SIZE_IN
- 0000010C  E8 00000000 E		call ReadFromFile
- 00000111  73 13			jnc check_buffer_size ; error reading?
+ 000001CE  BA 00000043 R		mov edx,OFFSET imageArray
+ 000001D3  B9 0105F9A1			mov ecx,BUFFER_SIZE_IN
+ 000001D8  E8 00000000 E		call ReadFromFile
+ 000001DD  73 13			jnc check_buffer_size ; error reading?
 					mWrite "Error reading file. " ; yes: show error message
- 0188E64A		     1		.data		
- 0188E64A 45 72 72 6F 72     1		??0001 BYTE "Error reading file. ",0	
+ 0188E83D		     1		.data		
+ 0188E83D 45 72 72 6F 72     1		??0012 BYTE "Error reading file. ",0	
 	   20 72 65 61 64
 	   69 6E 67 20 66
 	   69 6C 65 2E 20
 	   00
- 00000113		     1		.code
- 00000113  52		     1		push	edx
- 00000114  BA 0188E64A R     1		mov	edx,OFFSET ??0001
- 00000119  E8 00000000 E     1		call	WriteString
- 0000011E  5A		     1		pop	edx
- 0000011F  E8 00000000 E		call WriteWindowsMsg
- 00000124  EB 50			jmp close_file
+ 000001DF		     1		.code
+ 000001DF  52		     1		push	edx
+ 000001E0  BA 0188E83D R     1		mov	edx,OFFSET ??0012
+ 000001E5  E8 00000000 E     1		call	WriteString
+ 000001EA  5A		     1		pop	edx
+ 000001EB  E8 00000000 E		call WriteWindowsMsg
+ 000001F0  EB 35			jmp close_file
 
- 00000126			check_buffer_size:
- 00000126  3D 0105F9A1			cmp eax,BUFFER_SIZE_IN; buffer large enough?
- 0000012B  72 11			jb buf_size_ok ; yes
+ 000001F2			check_buffer_size:
+ 000001F2  3D 0105F9A1			cmp eax,BUFFER_SIZE_IN; buffer large enough?
+ 000001F7  72 11			jb buf_size_ok ; yes
 					mWrite <"Error: Buffer too small for the file",0dh,0ah>
- 0188E65F		     1		.data		
- 0188E65F 45 72 72 6F 72     1		??0002 BYTE "Error: Buffer too small for the file",0dh,0ah,0	
+ 0188E852		     1		.data		
+ 0188E852 45 72 72 6F 72     1		??0013 BYTE "Error: Buffer too small for the file",0dh,0ah,0	
 	   3A 20 42 75 66
 	   66 65 72 20 74
 	   6F 6F 20 73 6D
@@ -265,297 +494,309 @@ CreateFile.asm						     Page 1 - 1
 	   6F 72 20 74 68
 	   65 20 66 69 6C
 	   65 0D 0A 00
- 0000012D		     1		.code
- 0000012D  52		     1		push	edx
- 0000012E  BA 0188E65F R     1		mov	edx,OFFSET ??0002
- 00000133  E8 00000000 E     1		call	WriteString
- 00000138  5A		     1		pop	edx
- 00000139  E9 0000032E			jmp quit
+ 000001F9		     1		.code
+ 000001F9  52		     1		push	edx
+ 000001FA  BA 0188E852 R     1		mov	edx,OFFSET ??0013
+ 000001FF  E8 00000000 E     1		call	WriteString
+ 00000204  5A		     1		pop	edx
+ 00000205  E9 00000313			jmp quit
 
- 0000013E			buf_size_ok:
- 0000013E  C6 80 00000066 R		mov imageArray[eax],0 ; insert null terminator
+ 0000020A			buf_size_ok:
+ 0000020A  C6 80 00000043 R		mov imageArray[eax],0 ; insert null terminator
 	   00
 					mWrite "File size: "
- 0188E686		     1		.data		
- 0188E686 46 69 6C 65 20     1		??0003 BYTE "File size: ",0	
+ 0188E879		     1		.data		
+ 0188E879 46 69 6C 65 20     1		??0014 BYTE "File size: ",0	
 	   73 69 7A 65 3A
 	   20 00
- 00000145		     1		.code
- 00000145  52		     1		push	edx
- 00000146  BA 0188E686 R     1		mov	edx,OFFSET ??0003
- 0000014B  E8 00000000 E     1		call	WriteString
- 00000150  5A		     1		pop	edx
- 00000151  E8 00000000 E		call WriteDec ; display file size
- 00000156  E8 00000000 E		call Crlf
+ 00000211		     1		.code
+ 00000211  52		     1		push	edx
+ 00000212  BA 0188E879 R     1		mov	edx,OFFSET ??0014
+ 00000217  E8 00000000 E     1		call	WriteString
+ 0000021C  5A		     1		pop	edx
+ 0000021D  E8 00000000 E		call WriteDec ; display file size
+ 00000222  E8 00000000 E		call Crlf
 
-				; Display the buffer.
-					mWrite <"Buffer:",0dh,0ah,0dh,0ah>
- 0188E692		     1		.data		
- 0188E692 42 75 66 66 65     1		??0004 BYTE "Buffer:",0dh,0ah,0dh,0ah,0	
-	   72 3A 0D 0A 0D
-	   0A 00
- 0000015B		     1		.code
- 0000015B  52		     1		push	edx
- 0000015C  BA 0188E692 R     1		mov	edx,OFFSET ??0004
- 00000161  E8 00000000 E     1		call	WriteString
- 00000166  5A		     1		pop	edx
- 00000167  BA 00000066 R		mov edx,OFFSET imageArray ; display the buffer
- 0000016C  E8 00000000 E		call WriteString
- 00000171  E8 00000000 E		call Crlf
-
- 00000176			close_file:
- 00000176  A1 0105FA11 R		mov eax,fileHandleIn
- 0000017B  E8 00000000 E		call CloseFile
+ 00000227			close_file:
+ 00000227  A1 0105F9EE R		mov eax,fileHandleIn
+ 0000022C  E8 00000000 E		call CloseFile
 
 				; ------------------- TRANSFORM BUFFER TO INT ARRAY --------
 				; cl: register to hold the char and transform it to integer
 				; al: register that holds multiplication results
 				; dl: n as in 10^n
 				; bl: actual number
- 00000180  FC			cld
- 00000181  66| A1		mov ax, imageWidthExtended
-	   0105FA17 R
- 00000187  66| 8B 1D		mov bx, imageHeightExtended
-	   0105FA1B R
- 0000018E  66| F7 E3		mul bx
- 00000191  66| 8B DA		mov bx, dx
- 00000194  C1 E3 10		shl ebx, 16
- 00000197  66| 8B D8		mov bx, ax
- 0000019A  89 1D 0105FA25 R	mov pixelsIn, ebx					; pixelIn = (width+2)x(height+2)
- 000001A0  33 F6		xor esi, esi						; esi: counter
- 000001A2  33 FF		xor edi, edi						; edi: pixel counter
- 000001A4  33 C0		xor eax, eax							
- 000001A6  33 DB		xor ebx, ebx							
- 000001A8  33 C9		xor ecx, ecx							
- 000001AA  33 D2		xor edx, edx							
+ 00000231  FC			cld
+ 00000232  66| A1		mov ax, imageWidthExtended
+	   0105F9F4 R
+ 00000238  66| 8B 1D		mov bx, imageHeightExtended
+	   0105F9F8 R
+ 0000023F  66| F7 E3		mul bx
+ 00000242  66| 8B DA		mov bx, dx
+ 00000245  C1 E3 10		shl ebx, 16
+ 00000248  66| 8B D8		mov bx, ax
+ 0000024B  89 1D 0105FA02 R	mov pixelsIn, ebx					; pixelIn = (width+2)x(height+2)
+ 00000251  33 F6		xor esi, esi						; esi: counter
+ 00000253  33 FF		xor edi, edi						; edi: pixel counter
+ 00000255  33 C0		xor eax, eax							
+ 00000257  33 DB		xor ebx, ebx							
+ 00000259  33 C9		xor ecx, ecx							
+ 0000025B  33 D2		xor edx, edx							
 
 				; ----------------------- CONVOLUTION -------------------------
- 000001AC			convolution:
- 000001AC  C6 05 0105FA29 R		mov sharpeningKernel[0], 0
+ 0000025D			convolution:
+ 0000025D  C6 05 0105FA06 R		mov sharpeningKernel[0], 0
 	   00
- 000001B3  C6 05 0105FA2A R		mov sharpeningKernel[1], -1
+ 00000264  C6 05 0105FA07 R		mov sharpeningKernel[1], -1
 	   FF
- 000001BA  C6 05 0105FA2B R		mov sharpeningKernel[2], 0
+ 0000026B  C6 05 0105FA08 R		mov sharpeningKernel[2], 0
 	   00
- 000001C1  C6 05 0105FA2C R		mov sharpeningKernel[3], -1
+ 00000272  C6 05 0105FA09 R		mov sharpeningKernel[3], -1
 	   FF
- 000001C8  C6 05 0105FA2D R		mov sharpeningKernel[4], 5
+ 00000279  C6 05 0105FA0A R		mov sharpeningKernel[4], 5
 	   05
- 000001CF  C6 05 0105FA2E R		mov sharpeningKernel[5], -1
+ 00000280  C6 05 0105FA0B R		mov sharpeningKernel[5], -1
 	   FF
- 000001D6  C6 05 0105FA2F R		mov sharpeningKernel[6], 0
+ 00000287  C6 05 0105FA0C R		mov sharpeningKernel[6], 0
 	   00
- 000001DD  C6 05 0105FA30 R		mov sharpeningKernel[7], -1
+ 0000028E  C6 05 0105FA0D R		mov sharpeningKernel[7], -1
 	   FF
- 000001E4  C6 05 0105FA31 R		mov sharpeningKernel[8], 0
+ 00000295  C6 05 0105FA0E R		mov sharpeningKernel[8], 0
 	   00
 					
- 000001EB			new_kernel_row:
- 000001EB  8B 1D 0105FA3B R		mov ebx, kernelRowOffset
- 000001F1  03 1D 0105FA3F R		add ebx, kernelColumnOffset
- 000001F7  03 1D 0105FA43 R		add ebx, imageRowOffset
- 000001FD  03 1D 0105FA47 R		add ebx, imageColumnOffset
- 00000203  8A 8B 00000066 R		mov cl, [imageArray + ebx]
- 00000209  33 D2			xor edx, edx
- 0000020B  8A 15 0105FA3A R		mov dl, kernelCounter
- 00000211  8A 82 0105FA29 R		mov al, [sharpeningKernel + edx]
- 00000217  66| 98			cbw 
- 00000219  66| F7 E9			imul cx
- 0000021C  66| 01 05			add sum, ax
-	   0105FA32 R
- 00000223  FE 05 0105FA3A R		inc kernelCounter
- 00000229  FE 05 0105FA38 R		inc kernelRowCounter
- 0000022F  80 3D 0105FA38 R		cmp kernelRowCounter, 3
+ 0000029C			new_kernel_row:
+ 0000029C  8B 1D 0105FA18 R		mov ebx, kernelRowOffset
+ 000002A2  03 1D 0105FA1C R		add ebx, kernelColumnOffset
+ 000002A8  03 1D 0105FA20 R		add ebx, imageRowOffset
+ 000002AE  03 1D 0105FA24 R		add ebx, imageColumnOffset
+ 000002B4  8A 8B 00000043 R		mov cl, [imageArray + ebx]
+ 000002BA  33 D2			xor edx, edx
+ 000002BC  8A 15 0105FA17 R		mov dl, kernelCounter
+ 000002C2  8A 82 0105FA06 R		mov al, [sharpeningKernel + edx]
+ 000002C8  66| 98			cbw 
+ 000002CA  66| F7 E9			imul cx
+ 000002CD  66| 01 05			add sum, ax
+	   0105FA0F R
+ 000002D4  FE 05 0105FA17 R		inc kernelCounter
+ 000002DA  FE 05 0105FA15 R		inc kernelRowCounter
+ 000002E0  80 3D 0105FA15 R		cmp kernelRowCounter, 3
 	   03
- 00000236  74 08			je new_kernel_column
- 00000238  FF 05 0105FA3B R		inc kernelRowOffset
- 0000023E  EB AB			jmp new_kernel_row
+ 000002E7  74 08			je new_kernel_column
+ 000002E9  FF 05 0105FA18 R		inc kernelRowOffset
+ 000002EF  EB AB			jmp new_kernel_row
 
- 00000240			new_kernel_column:
- 00000240  FE 05 0105FA39 R		inc kernelColumnCounter
- 00000246  80 3D 0105FA39 R		cmp kernelColumnCounter, 3
+ 000002F1			new_kernel_column:
+ 000002F1  FE 05 0105FA16 R		inc kernelColumnCounter
+ 000002F7  80 3D 0105FA16 R		cmp kernelColumnCounter, 3
 	   03
- 0000024D  74 24			je new_image_row
- 0000024F  C7 05 0105FA3B R		mov kernelRowOffset, 0
+ 000002FE  74 24			je new_image_row
+ 00000300  C7 05 0105FA18 R		mov kernelRowOffset, 0
 	   00000000
- 00000259  C6 05 0105FA38 R		mov kernelRowCounter, 0
+ 0000030A  C6 05 0105FA15 R		mov kernelRowCounter, 0
 	   00
- 00000260  33 C0			xor eax, eax
- 00000262  66| A1			mov ax, imageWidthExtended
-	   0105FA17 R
- 00000268  01 05 0105FA3F R		add kernelColumnOffset, eax
- 0000026E  E9 FFFFFF78			jmp new_kernel_row
+ 00000311  33 C0			xor eax, eax
+ 00000313  66| A1			mov ax, imageWidthExtended
+	   0105F9F4 R
+ 00000319  01 05 0105FA1C R		add kernelColumnOffset, eax
+ 0000031F  E9 FFFFFF78			jmp new_kernel_row
 
- 00000273			new_image_row:
- 00000273  66| A1			mov ax, sum
-	   0105FA32 R
- 00000279  8B 1D 0105FA4B R		mov ebx, sharpenedImageCounter
- 0000027F  66| 83 F8 00			cmp ax, 0
- 00000283  7C 0E			jl less_than_zero
- 00000285  66| 3D 00FF			cmp ax, 255
- 00000289  7F 11			jg over_255
- 0000028B  88 83 0105FA50 R		mov sharpenedImage[ebx], al
- 00000291  EB 10			jmp sum_stored
- 00000293			less_than_zero:
- 00000293  C6 83 0105FA50 R		mov sharpenedImage[ebx], 0
+ 00000324			new_image_row:
+ 00000324  66| A1			mov ax, sum
+	   0105FA0F R
+ 0000032A  8B 1D 0105FA28 R		mov ebx, sharpenedImageCounter
+ 00000330  66| 83 F8 00			cmp ax, 0
+ 00000334  7C 0E			jl less_than_zero
+ 00000336  66| 3D 00FF			cmp ax, 255
+ 0000033A  7F 11			jg over_255
+ 0000033C  88 83 0105FA2D R		mov sharpenedImage[ebx], al
+ 00000342  EB 10			jmp sum_stored
+ 00000344			less_than_zero:
+ 00000344  C6 83 0105FA2D R		mov sharpenedImage[ebx], 0
 	   00
- 0000029A  EB 07			jmp sum_stored
- 0000029C			over_255:
- 0000029C  C6 83 0105FA50 R		mov sharpenedImage[ebx], 255
+ 0000034B  EB 07			jmp sum_stored
+ 0000034D			over_255:
+ 0000034D  C6 83 0105FA2D R		mov sharpenedImage[ebx], 255
 	   FF
- 000002A3			sum_stored:
- 000002A3  33 C0			xor eax, eax
- 000002A5  33 DB			xor ebx, ebx
- 000002A7  33 C9			xor ecx, ecx
- 000002A9  33 D2			xor edx, edx
- 000002AB  C7 05 0105FA3B R		mov kernelRowOffset, 0
+ 00000354			sum_stored:
+ 00000354  33 C0			xor eax, eax
+ 00000356  33 DB			xor ebx, ebx
+ 00000358  33 C9			xor ecx, ecx
+ 0000035A  33 D2			xor edx, edx
+ 0000035C  C7 05 0105FA18 R		mov kernelRowOffset, 0
 	   00000000
- 000002B5  C7 05 0105FA3F R		mov kernelColumnOffset, 0
+ 00000366  C7 05 0105FA1C R		mov kernelColumnOffset, 0
 	   00000000
- 000002BF  C6 05 0105FA38 R		mov kernelRowCounter, 0
+ 00000370  C6 05 0105FA15 R		mov kernelRowCounter, 0
 	   00
- 000002C6  C6 05 0105FA39 R		mov kernelColumnCounter, 0
+ 00000377  C6 05 0105FA16 R		mov kernelColumnCounter, 0
 	   00
- 000002CD  C6 05 0105FA3A R		mov kernelCounter, 0
+ 0000037E  C6 05 0105FA17 R		mov kernelCounter, 0
 	   00
- 000002D4  66| C7 05			mov sum, 0
-	   0105FA32 R
+ 00000385  66| C7 05			mov sum, 0
+	   0105FA0F R
 	   0000
- 000002DD  FF 05 0105FA43 R		inc imageRowOffset
- 000002E3  FF 05 0105FA4B R		inc sharpenedImageCounter
- 000002E9  66| A1			mov ax, imageWidth
-	   0105FA15 R
- 000002EF  66| FF 05			inc imageRowCounter
-	   0105FA34 R
- 000002F6  66| 39 05			cmp imageRowCounter, ax
-	   0105FA34 R
- 000002FD  0F 85 FFFFFEE8		jne new_kernel_row
+ 0000038E  FF 05 0105FA20 R		inc imageRowOffset
+ 00000394  FF 05 0105FA28 R		inc sharpenedImageCounter
+ 0000039A  66| A1			mov ax, imageWidth
+	   0105F9F2 R
+ 000003A0  66| FF 05			inc imageRowCounter
+	   0105FA11 R
+ 000003A7  66| 39 05			cmp imageRowCounter, ax
+	   0105FA11 R
+ 000003AE  0F 85 FFFFFEE8		jne new_kernel_row
 
- 00000303			new_image_column:
- 00000303  66| FF 05			inc imageColumnCounter
-	   0105FA36 R
- 0000030A  66| A1			mov ax, imageHeight
-	   0105FA19 R
- 00000310  66| 39 05			cmp imageColumnCounter, ax
-	   0105FA36 R
- 00000317  74 26			je sharpened
- 00000319  66| C7 05			mov imageRowCounter, 0
-	   0105FA34 R
+ 000003B4			new_image_column:
+ 000003B4  66| FF 05			inc imageColumnCounter
+	   0105FA13 R
+ 000003BB  66| A1			mov ax, imageHeight
+	   0105F9F6 R
+ 000003C1  66| 39 05			cmp imageColumnCounter, ax
+	   0105FA13 R
+ 000003C8  74 26			je sharpened
+ 000003CA  66| C7 05			mov imageRowCounter, 0
+	   0105FA11 R
 	   0000
- 00000322  C7 05 0105FA43 R		mov imageRowOffset, 0
+ 000003D3  C7 05 0105FA20 R		mov imageRowOffset, 0
 	   00000000
- 0000032C  33 C0			xor eax, eax
- 0000032E  66| A1			mov ax, imageWidthExtended
-	   0105FA17 R
- 00000334  01 05 0105FA47 R		add imageColumnOffset, eax
- 0000033A  E9 FFFFFEAC			jmp new_kernel_row
+ 000003DD  33 C0			xor eax, eax
+ 000003DF  66| A1			mov ax, imageWidthExtended
+	   0105F9F4 R
+ 000003E5  01 05 0105FA24 R		add imageColumnOffset, eax
+ 000003EB  E9 FFFFFEAC			jmp new_kernel_row
 					
- 0000033F			sharpened:
+ 000003F0			sharpened:
 				; ----------------------- WRITE FILE ------------------------
 				; Create a new text file.
- 0000033F  BA 0188E5F0 R		mov	edx, OFFSET fileNameOut
- 00000344  E8 00000000 E		call	CreateOutputFile
- 00000349  A3 0188E602 R		mov	fileHandleOut,eax
+ 000003F0  BA 0188E5CD R		mov	edx, OFFSET fileNameOut
+ 000003F5  E8 00000000 E		call	CreateOutputFile
+ 000003FA  A3 0188E5DF R		mov	fileHandleOut,eax
 
 				; Check for errors.
- 0000034E  83 F8 FF			cmp	eax, INVALID_HANDLE_VALUE	; error found?
- 00000351  75 0F			jne	file_out_ok					; no: skip
- 00000353  BA 0188E60A R		mov	edx,OFFSET str1Out			; display error
- 00000358  E8 00000000 E		call	WriteString
- 0000035D  E9 0000010A			jmp	quit
- 00000362			file_out_ok:
+ 000003FF  83 F8 FF			cmp	eax, INVALID_HANDLE_VALUE	; error found?
+ 00000402  75 0F			jne	file_out_ok					; no: skip
+ 00000404  BA 0188E5E7 R		mov	edx,OFFSET str1Out			; display error
+ 00000409  E8 00000000 E		call	WriteString
+ 0000040E  E9 0000010A			jmp	quit
+ 00000413			file_out_ok:
 				; Write the buffer to the output file.
- 00000362  A1 0188E602 R		mov	eax,fileHandleOut
- 00000367  BA 0105FA50 R		mov	edx,OFFSET sharpenedImage
- 0000036C  8B 0D 0105FA1D R		mov	ecx,imageResolution
- 00000372  E8 00000000 E		call	WriteToFile
- 00000377  A3 0188E606 R		mov	bytesWrittenOut,eax		; save return value
- 0000037C  E8 00000000 E		call	CloseFile
-					
-					COMMENT @
-				; Display the return value.
-					mov	edx,OFFSET str2Out		; "Bytes written"
-					call	WriteString
-					mov	eax,bytesWrittenOut
-					call	WriteDec
-					call	Crlf
-					@
+ 00000413  A1 0188E5DF R		mov	eax,fileHandleOut
+ 00000418  BA 0105FA2D R		mov	edx,OFFSET sharpenedImage
+ 0000041D  8B 0D 0105F9FA R		mov	ecx,imageResolution
+ 00000423  E8 00000000 E		call	WriteToFile
+ 00000428  A3 0188E5E3 R		mov	bytesWrittenOut,eax		; save return value
+ 0000042D  E8 00000000 E		call	CloseFile
 
 					; Do the same process for oversharpening
- 00000381  80 3D 0105FA4F R		cmp newImage, 1
+ 00000432  80 3D 0105FA2C R		cmp newImage, 1
 	   01
- 00000388  0F 84 000000DE		je quit
- 0000038E  FE 05 0105FA4F R		inc newImage
+ 00000439  0F 84 000000DE		je quit
+ 0000043F  FE 05 0105FA2C R		inc newImage
 					; Change settings for oversharpening
- 00000394  C6 05 0188E5F0 R		mov	fileNameOut, "o"
+ 00000445  C6 05 0188E5CD R		mov	fileNameOut, "o"
 	   6F
- 0000039B  C6 05 0188E5F1 R		mov fileNameOut[1], "v"
+ 0000044C  C6 05 0188E5CE R		mov fileNameOut[1], "v"
 	   76
- 000003A2  C6 05 0188E5F2 R		mov fileNameOut[2], "e"
+ 00000453  C6 05 0188E5CF R		mov fileNameOut[2], "e"
 	   65
- 000003A9  C6 05 0188E5F3 R		mov fileNameOut[3], "r"
+ 0000045A  C6 05 0188E5D0 R		mov fileNameOut[3], "r"
 	   72
- 000003B0  C6 05 0105FA29 R		mov sharpeningKernel[0], 0
+ 00000461  C6 05 0105FA06 R		mov sharpeningKernel[0], 0
 	   00
- 000003B7  C6 05 0105FA2A R		mov sharpeningKernel[1], -2
+ 00000468  C6 05 0105FA07 R		mov sharpeningKernel[1], -2
 	   FE
- 000003BE  C6 05 0105FA2B R		mov sharpeningKernel[2], 0
+ 0000046F  C6 05 0105FA08 R		mov sharpeningKernel[2], 0
 	   00
- 000003C5  C6 05 0105FA2C R		mov sharpeningKernel[3], -2
+ 00000476  C6 05 0105FA09 R		mov sharpeningKernel[3], -2
 	   FE
- 000003CC  C6 05 0105FA2D R		mov sharpeningKernel[4], 9
+ 0000047D  C6 05 0105FA0A R		mov sharpeningKernel[4], 9
 	   09
- 000003D3  C6 05 0105FA2E R		mov sharpeningKernel[5], -2
+ 00000484  C6 05 0105FA0B R		mov sharpeningKernel[5], -2
 	   FE
- 000003DA  C6 05 0105FA2F R		mov sharpeningKernel[6], 0
+ 0000048B  C6 05 0105FA0C R		mov sharpeningKernel[6], 0
 	   00
- 000003E1  C6 05 0105FA30 R		mov sharpeningKernel[7], -2
+ 00000492  C6 05 0105FA0D R		mov sharpeningKernel[7], -2
 	   FE
- 000003E8  C6 05 0105FA31 R		mov sharpeningKernel[8], 0
+ 00000499  C6 05 0105FA0E R		mov sharpeningKernel[8], 0
 	   00
 					; Reset all convolution values
- 000003EF  33 C0			xor eax, eax
- 000003F1  33 DB			xor ebx, ebx
- 000003F3  33 C9			xor ecx, ecx
- 000003F5  33 D2			xor edx, edx
- 000003F7  33 FF			xor edi, edi
- 000003F9  33 F6			xor esi, esi
- 000003FB  66| C7 05			mov sum, 0
-	   0105FA32 R
+ 000004A0  33 C0			xor eax, eax
+ 000004A2  33 DB			xor ebx, ebx
+ 000004A4  33 C9			xor ecx, ecx
+ 000004A6  33 D2			xor edx, edx
+ 000004A8  33 FF			xor edi, edi
+ 000004AA  33 F6			xor esi, esi
+ 000004AC  66| C7 05			mov sum, 0
+	   0105FA0F R
 	   0000
- 00000404  66| C7 05			mov imageRowCounter, 0
-	   0105FA34 R
+ 000004B5  66| C7 05			mov imageRowCounter, 0
+	   0105FA11 R
 	   0000
- 0000040D  66| C7 05			mov imageColumnCounter, 0
-	   0105FA36 R
+ 000004BE  66| C7 05			mov imageColumnCounter, 0
+	   0105FA13 R
 	   0000
- 00000416  C6 05 0105FA38 R		mov kernelRowCounter, 0
+ 000004C7  C6 05 0105FA15 R		mov kernelRowCounter, 0
 	   00
- 0000041D  C6 05 0105FA39 R		mov kernelColumnCounter, 0
+ 000004CE  C6 05 0105FA16 R		mov kernelColumnCounter, 0
 	   00
- 00000424  C6 05 0105FA3A R		mov kernelCounter, 0
+ 000004D5  C6 05 0105FA17 R		mov kernelCounter, 0
 	   00
- 0000042B  C7 05 0105FA3B R		mov kernelRowOffset, 0
+ 000004DC  C7 05 0105FA18 R		mov kernelRowOffset, 0
 	   00000000
- 00000435  C7 05 0105FA3F R		mov kernelColumnOffset, 0
+ 000004E6  C7 05 0105FA1C R		mov kernelColumnOffset, 0
 	   00000000
- 0000043F  C7 05 0105FA43 R		mov imageRowOffset, 0
+ 000004F0  C7 05 0105FA20 R		mov imageRowOffset, 0
 	   00000000
- 00000449  C7 05 0105FA47 R		mov imageColumnOffset, 0
+ 000004FA  C7 05 0105FA24 R		mov imageColumnOffset, 0
 	   00000000
- 00000453  C7 05 0105FA4B R		mov sharpenedImageCounter, 0
+ 00000504  C7 05 0105FA28 R		mov sharpenedImageCounter, 0
 	   00000000
- 0000045D  C7 05 0188E606 R		mov bytesWrittenOut, 0
+ 0000050E  C7 05 0188E5E3 R		mov bytesWrittenOut, 0
 	   00000000
- 00000467  E9 FFFFFD7F			jmp new_kernel_row
+ 00000518  E9 FFFFFD7F			jmp new_kernel_row
 
- 0000046C			quit:
+ 0000051D			quit:
+					mWrite <"Sharpening and oversharpening successful!",0dh,0ah>
+ 0188E885		     1		.data		
+ 0188E885 53 68 61 72 70     1		??0015 BYTE "Sharpening and oversharpening successful!",0dh,0ah,0	
+	   65 6E 69 6E 67
+	   20 61 6E 64 20
+	   6F 76 65 72 73
+	   68 61 72 70 65
+	   6E 69 6E 67 20
+	   73 75 63 63 65
+	   73 73 66 75 6C
+	   21 0D 0A 00
+ 0000051D		     1		.code
+ 0000051D  52		     1		push	edx
+ 0000051E  BA 0188E885 R     1		mov	edx,OFFSET ??0015
+ 00000523  E8 00000000 E     1		call	WriteString
+ 00000528  5A		     1		pop	edx
+					mWrite <"----------------------------------------------------------",0dh,0ah>
+ 0188E8B1		     1		.data		
+ 0188E8B1 2D 2D 2D 2D 2D     1		??0016 BYTE "----------------------------------------------------------",0dh,0ah,0	
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 2D 2D
+	   2D 2D 2D 0D 0A
+	   00
+ 00000529		     1		.code
+ 00000529  52		     1		push	edx
+ 0000052A  BA 0188E8B1 R     1		mov	edx,OFFSET ??0016
+ 0000052F  E8 00000000 E     1		call	WriteString
+ 00000534  5A		     1		pop	edx
 					exit
- 0000046C  6A 00	   *	    push   +000000000h
- 0000046E  E8 00000000 E   *	    call   ExitProcess
- 00000473			main ENDP
+ 00000535  6A 00	   *	    push   +000000000h
+ 00000537  E8 00000000 E   *	    call   ExitProcess
+ 0000053C			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/25/20 01:27:03
+Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/26/20 02:04:17
 CreateFile.asm						     Symbols 2 - 1
 
 
@@ -667,8 +908,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 0188E69E Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 00000473 Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 0188E8EE Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000053C Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -775,28 +1016,28 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000473 Public STDCALL
-  getImageWidth  . . . . . . . .	L Near	 0000003B _TEXT	
-  updateWidthValue . . . . . . .	L Near	 00000051 _TEXT	
-  endWidth . . . . . . . . . . .	L Near	 00000058 _TEXT	
-  getImageHeight . . . . . . . .	L Near	 00000063 _TEXT	
-  updateHeightValue  . . . . . .	L Near	 00000079 _TEXT	
-  endHeight  . . . . . . . . . .	L Near	 00000080 _TEXT	
-  file_ok_in . . . . . . . . . .	L Near	 00000102 _TEXT	
-  check_buffer_size  . . . . . .	L Near	 00000126 _TEXT	
-  buf_size_ok  . . . . . . . . .	L Near	 0000013E _TEXT	
-  close_file . . . . . . . . . .	L Near	 00000176 _TEXT	
-  convolution  . . . . . . . . .	L Near	 000001AC _TEXT	
-  new_kernel_row . . . . . . . .	L Near	 000001EB _TEXT	
-  new_kernel_column  . . . . . .	L Near	 00000240 _TEXT	
-  new_image_row  . . . . . . . .	L Near	 00000273 _TEXT	
-  less_than_zero . . . . . . . .	L Near	 00000293 _TEXT	
-  over_255 . . . . . . . . . . .	L Near	 0000029C _TEXT	
-  sum_stored . . . . . . . . . .	L Near	 000002A3 _TEXT	
-  new_image_column . . . . . . .	L Near	 00000303 _TEXT	
-  sharpened  . . . . . . . . . .	L Near	 0000033F _TEXT	
-  file_out_ok  . . . . . . . . .	L Near	 00000362 _TEXT	
-  quit . . . . . . . . . . . . .	L Near	 0000046C _TEXT	
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000053C Public STDCALL
+  getImageWidth  . . . . . . . .	L Near	 00000107 _TEXT	
+  updateWidthValue . . . . . . .	L Near	 0000011D _TEXT	
+  endWidth . . . . . . . . . . .	L Near	 00000124 _TEXT	
+  getImageHeight . . . . . . . .	L Near	 0000012F _TEXT	
+  updateHeightValue  . . . . . .	L Near	 00000145 _TEXT	
+  endHeight  . . . . . . . . . .	L Near	 0000014C _TEXT	
+  file_ok_in . . . . . . . . . .	L Near	 000001CE _TEXT	
+  check_buffer_size  . . . . . .	L Near	 000001F2 _TEXT	
+  buf_size_ok  . . . . . . . . .	L Near	 0000020A _TEXT	
+  close_file . . . . . . . . . .	L Near	 00000227 _TEXT	
+  convolution  . . . . . . . . .	L Near	 0000025D _TEXT	
+  new_kernel_row . . . . . . . .	L Near	 0000029C _TEXT	
+  new_kernel_column  . . . . . .	L Near	 000002F1 _TEXT	
+  new_image_row  . . . . . . . .	L Near	 00000324 _TEXT	
+  less_than_zero . . . . . . . .	L Near	 00000344 _TEXT	
+  over_255 . . . . . . . . . . .	L Near	 0000034D _TEXT	
+  sum_stored . . . . . . . . . .	L Near	 00000354 _TEXT	
+  new_image_column . . . . . . .	L Near	 000003B4 _TEXT	
+  sharpened  . . . . . . . . . .	L Near	 000003F0 _TEXT	
+  file_out_ok  . . . . . . . . .	L Near	 00000413 _TEXT	
+  quit . . . . . . . . . . . . .	L Near	 0000051D _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -806,11 +1047,29 @@ Symbols:
 
                 N a m e                 Type     Value    Attr
 
-??0000 . . . . . . . . . . . . .	Byte	 0188E637 _DATA	
-??0001 . . . . . . . . . . . . .	Byte	 0188E64A _DATA	
-??0002 . . . . . . . . . . . . .	Byte	 0188E65F _DATA	
-??0003 . . . . . . . . . . . . .	Byte	 0188E686 _DATA	
-??0004 . . . . . . . . . . . . .	Byte	 0188E692 _DATA	
+??0000 . . . . . . . . . . . . .	Byte	 0188E614 _DATA	
+??0001 . . . . . . . . . . . . .	Byte	 0188E651 _DATA	
+??0002 . . . . . . . . . . . . .	Byte	 0188E66D _DATA	
+??0003 . . . . . . . . . . . . .	Byte	 0188E671 _DATA	
+??0004 . . . . . . . . . . . . .	Byte	 0188E696 _DATA	
+??0005 . . . . . . . . . . . . .	Byte	 0188E6B0 _DATA	
+??0006 . . . . . . . . . . . . .	Byte	 0188E6B4 _DATA	
+??0007 . . . . . . . . . . . . .	Byte	 0188E6CC _DATA	
+??0008 . . . . . . . . . . . . .	Byte	 0188E6EC _DATA	
+??0009 . . . . . . . . . . . . .	Byte	 0188E6F0 _DATA	
+??000A . . . . . . . . . . . . .	Byte	 0188E70E _DATA	
+??000B . . . . . . . . . . . . .	Byte	 0188E734 _DATA	
+??000C . . . . . . . . . . . . .	Byte	 0188E738 _DATA	
+??000D . . . . . . . . . . . . .	Byte	 0188E74D _DATA	
+??000E . . . . . . . . . . . . .	Byte	 0188E78A _DATA	
+??000F . . . . . . . . . . . . .	Byte	 0188E7BC _DATA	
+??0010 . . . . . . . . . . . . .	Byte	 0188E7ED _DATA	
+??0011 . . . . . . . . . . . . .	Byte	 0188E82A _DATA	
+??0012 . . . . . . . . . . . . .	Byte	 0188E83D _DATA	
+??0013 . . . . . . . . . . . . .	Byte	 0188E852 _DATA	
+??0014 . . . . . . . . . . . . .	Byte	 0188E879 _DATA	
+??0015 . . . . . . . . . . . . .	Byte	 0188E885 _DATA	
+??0016 . . . . . . . . . . . . .	Byte	 0188E8B1 _DATA	
 @CodeSize  . . . . . . . . . . .	Number	 00000000h   
 @DataSize  . . . . . . . . . . .	Number	 00000000h   
 @Interface . . . . . . . . . . .	Number	 00000003h   
@@ -1028,35 +1287,35 @@ blue . . . . . . . . . . . . . .	Number	 00000001h
 brown  . . . . . . . . . . . . .	Number	 00000006h   
 bufferConsole  . . . . . . . . .	Byte	 00000000 _DATA	
 bytesRead  . . . . . . . . . . .	DWord	 00000010 _DATA	
-bytesWrittenOut  . . . . . . . .	DWord	 0188E606 _DATA	
+bytesWrittenOut  . . . . . . . .	DWord	 0188E5E3 _DATA	
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 extendedImageMaxSize . . . . . .	Number	 0105F9A0h   
-extendedImageSize  . . . . . . .	DWord	 0105FA21 _DATA	
-fileHandleIn . . . . . . . . . .	DWord	 0105FA11 _DATA	
-fileHandleOut  . . . . . . . . .	DWord	 0188E602 _DATA	
-fileNameIn . . . . . . . . . . .	Byte	 0105FA07 _DATA	
-fileNameOut  . . . . . . . . . .	Byte	 0188E5F0 _DATA	
+extendedImageSize  . . . . . . .	DWord	 0105F9FE _DATA	
+fileHandleIn . . . . . . . . . .	DWord	 0105F9EE _DATA	
+fileHandleOut  . . . . . . . . .	DWord	 0188E5DF _DATA	
+fileNameIn . . . . . . . . . . .	Byte	 0105F9E4 _DATA	
+fileNameOut  . . . . . . . . . .	Byte	 0188E5CD _DATA	
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
-imageArray . . . . . . . . . . .	Byte	 00000066 _DATA	
-imageColumnCounter . . . . . . .	Word	 0105FA36 _DATA	
-imageColumnOffset  . . . . . . .	DWord	 0105FA47 _DATA	
-imageHeightExtended  . . . . . .	Word	 0105FA1B _DATA	
-imageHeight  . . . . . . . . . .	Word	 0105FA19 _DATA	
+imageArray . . . . . . . . . . .	Byte	 00000043 _DATA	
+imageColumnCounter . . . . . . .	Word	 0105FA13 _DATA	
+imageColumnOffset  . . . . . . .	DWord	 0105FA24 _DATA	
+imageHeightExtended  . . . . . .	Word	 0105F9F8 _DATA	
+imageHeight  . . . . . . . . . .	Word	 0105F9F6 _DATA	
 imageMaxHeight . . . . . . . . .	Number	 00000898h   
 imageMaxResolution . . . . . . .	Number	 0082EBA0h   
 imageMaxWidth  . . . . . . . . .	Number	 00000F3Ch   
-imageResolution  . . . . . . . .	DWord	 0105FA1D _DATA	
-imageRowCounter  . . . . . . . .	Word	 0105FA34 _DATA	
-imageRowOffset . . . . . . . . .	DWord	 0105FA43 _DATA	
-imageWidthExtended . . . . . . .	Word	 0105FA17 _DATA	
-imageWidth . . . . . . . . . . .	Word	 0105FA15 _DATA	
-kernelColumnCounter  . . . . . .	Byte	 0105FA39 _DATA	
-kernelColumnOffset . . . . . . .	DWord	 0105FA3F _DATA	
-kernelCounter  . . . . . . . . .	Byte	 0105FA3A _DATA	
-kernelRowCounter . . . . . . . .	Byte	 0105FA38 _DATA	
-kernelRowOffset  . . . . . . . .	DWord	 0105FA3B _DATA	
+imageResolution  . . . . . . . .	DWord	 0105F9FA _DATA	
+imageRowCounter  . . . . . . . .	Word	 0105FA11 _DATA	
+imageRowOffset . . . . . . . . .	DWord	 0105FA20 _DATA	
+imageWidthExtended . . . . . . .	Word	 0105F9F4 _DATA	
+imageWidth . . . . . . . . . . .	Word	 0105F9F2 _DATA	
+kernelColumnCounter  . . . . . .	Byte	 0105FA16 _DATA	
+kernelColumnOffset . . . . . . .	DWord	 0105FA1C _DATA	
+kernelCounter  . . . . . . . . .	Byte	 0105FA17 _DATA	
+kernelRowCounter . . . . . . . .	Byte	 0105FA15 _DATA	
+kernelRowOffset  . . . . . . . .	DWord	 0105FA18 _DATA	
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
 lightCyan  . . . . . . . . . . .	Number	 0000000Bh   
 lightGray  . . . . . . . . . . .	Number	 00000007h   
@@ -1064,16 +1323,16 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-newImage . . . . . . . . . . . .	Byte	 0105FA4F _DATA	
-pixelsIn . . . . . . . . . . . .	DWord	 0105FA25 _DATA	
+newImage . . . . . . . . . . . .	Byte	 0105FA2C _DATA	
+pixelsIn . . . . . . . . . . . .	DWord	 0105FA02 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-sharpenedImageCounter  . . . . .	DWord	 0105FA4B _DATA	
-sharpenedImage . . . . . . . . .	Byte	 0105FA50 _DATA	
-sharpeningKernel . . . . . . . .	Byte	 0105FA29 _DATA	
+sharpenedImageCounter  . . . . .	DWord	 0105FA28 _DATA	
+sharpenedImage . . . . . . . . .	Byte	 0105FA2D _DATA	
+sharpeningKernel . . . . . . . .	Byte	 0105FA06 _DATA	
 stdInHandle  . . . . . . . . . .	DWord	 0000000C _DATA	
-str1Out  . . . . . . . . . . . .	Byte	 0188E60A _DATA	
-str2Out  . . . . . . . . . . . .	Byte	 0188E61F _DATA	
-sum  . . . . . . . . . . . . . .	Word	 0105FA32 _DATA	
+str1Out  . . . . . . . . . . . .	Byte	 0188E5E7 _DATA	
+str2Out  . . . . . . . . . . . .	Byte	 0188E5FC _DATA	
+sum  . . . . . . . . . . . . . .	Word	 0105FA0F _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
