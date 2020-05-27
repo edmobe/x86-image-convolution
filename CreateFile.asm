@@ -8,7 +8,7 @@ INCLUDE macros.inc
 imageMaxWidth = 3900
 imageMaxHeight	= 2200
 imageMaxResolution	= imageMaxWidth * imageMaxHeight					; width x height
-extendedImageMaxSize = (imageMaxWidth + 2) * (imageMaxHeight * 2)	; (width + 2) x (height + 2)
+extendedImageMaxSize = (imageMaxWidth + 2) * (imageMaxHeight * 2)		; (width + 2) x (height + 2)
 BUFFER_SIZE_IN	= extendedImageMaxSize + 1
 BUFFER_CONSOLE = 10
 
@@ -75,7 +75,6 @@ mWrite <"This program sharpens and oversharpens an image",0dh,0ah>
 mWrite <"Maximum dimensions: 3900x2200 (width x height)",0dh,0ah>
 mWrite <"----------------------------------------------------------",0dh,0ah>
 
-
 ; -------------- GET IMAGE DIMENSIONS FROM CONSOLE ------
 ; Ask for the input
 mov	edx,OFFSET askForDimensions			
@@ -137,6 +136,7 @@ mov cx, dx
 shl ecx, 16
 add cx, ax
 mov imageResolution, ecx
+
 ; Get amount of pixels (extended)
 mov ax, imageHeight
 mov bx, imageWidth
@@ -224,7 +224,7 @@ convolution:
 	mov sharpeningKernel[7], -1
 	mov sharpeningKernel[8], 0
 	
-new_kernel_row:
+new_kernel_column:
 	mov ebx, kernelRowOffset
 	add ebx, kernelColumnOffset
 	add ebx, imageRowOffset
@@ -237,24 +237,24 @@ new_kernel_row:
 	imul cx
 	add sum, ax
 	inc kernelCounter
-	inc kernelRowCounter
-	cmp kernelRowCounter, 3
-	je new_kernel_column
-	inc kernelRowOffset
-	jmp new_kernel_row
-
-new_kernel_column:
 	inc kernelColumnCounter
 	cmp kernelColumnCounter, 3
-	je new_image_row
-	mov kernelRowOffset, 0
-	mov kernelRowCounter, 0
+	je new_kernel_row
+	inc kernelColumnOffset
+	jmp new_kernel_column
+
+new_kernel_row:
+	inc kernelRowCounter
+	cmp kernelRowCounter, 3
+	je new_image_column
+	mov kernelColumnOffset, 0
+	mov kernelColumnCounter, 0
 	xor eax, eax
 	mov ax, imageWidthExtended
-	add kernelColumnOffset, eax
-	jmp new_kernel_row
+	add kernelRowOffset, eax
+	jmp new_kernel_column
 
-new_image_row:
+new_image_column:
 	mov ax, sum
 	mov ebx, sharpenedImageCounter
 	cmp ax, 0
@@ -279,24 +279,24 @@ sum_stored:
 	mov kernelColumnCounter, 0
 	mov kernelCounter, 0
 	mov sum, 0
-	inc imageRowOffset
+	inc imageColumnOffset
 	inc sharpenedImageCounter
 	mov ax, imageWidth
-	inc imageRowCounter
-	cmp imageRowCounter, ax
-	jne new_kernel_row
-
-new_image_column:
 	inc imageColumnCounter
-	mov ax, imageHeight
 	cmp imageColumnCounter, ax
+	jne new_kernel_column
+
+new_image_row:
+	inc imageRowCounter
+	mov ax, imageHeight
+	cmp imageRowCounter, ax
 	je sharpened
-	mov imageRowCounter, 0
-	mov imageRowOffset, 0
+	mov imageColumnCounter, 0
+	mov imageColumnOffset, 0
 	xor eax, eax
 	mov ax, imageWidthExtended
-	add imageColumnOffset, eax
-	jmp new_kernel_row
+	add imageRowOffset, eax
+	jmp new_kernel_column
 	
 sharpened:
 ; ----------------------- WRITE FILE ------------------------
@@ -322,7 +322,7 @@ file_out_ok:
 
 	; Do the same process for oversharpening
 	cmp newImage, 1
-	je quit
+	je sharpening_successful
 	inc newImage
 	; Change settings for oversharpening
 	mov	fileNameOut, "o"
@@ -359,8 +359,9 @@ file_out_ok:
 	mov bytesWrittenOut, 0
 	jmp new_kernel_row
 
-quit:
+sharpening_successful:
 	mWrite <"Sharpening and oversharpening successful!",0dh,0ah>
+quit:
 	mWrite <"----------------------------------------------------------",0dh,0ah>
 	exit
 main ENDP

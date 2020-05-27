@@ -1,5 +1,3 @@
-#! octave-interpreter-name -qf
-# a sample Octave program
 clear;
 disp("=====================================================================");
 [imageWidth, imageHeight] = imageToTxt();

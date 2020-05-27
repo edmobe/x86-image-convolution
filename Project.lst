@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/26/20 02:04:17
+Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/27/20 01:22:48
 CreateFile.asm						     Page 1 - 1
 
 
@@ -32,7 +32,7 @@ CreateFile.asm						     Page 1 - 1
  = 00000F3C			imageMaxWidth = 3900
  = 00000898			imageMaxHeight	= 2200
  = 0082EBA0			imageMaxResolution	= imageMaxWidth * imageMaxHeight					; width x height
- = 0105F9A0			extendedImageMaxSize = (imageMaxWidth + 2) * (imageMaxHeight * 2)	; (width + 2) x (height + 2)
+ = 0105F9A0			extendedImageMaxSize = (imageMaxWidth + 2) * (imageMaxHeight * 2)		; (width + 2) x (height + 2)
  = 0105F9A1			BUFFER_SIZE_IN	= extendedImageMaxSize + 1
  = 0000000A			BUFFER_CONSOLE = 10
 
@@ -344,7 +344,6 @@ CreateFile.asm						     Page 1 - 1
  000000C6  E8 00000000 E     1		call	WriteString
  000000CB  5A		     1		pop	edx
 
-
 				; -------------- GET IMAGE DIMENSIONS FROM CONSOLE ------
 				; Ask for the input
  000000CC  BA 00000014 R	mov	edx,OFFSET askForDimensions			
@@ -417,6 +416,7 @@ CreateFile.asm						     Page 1 - 1
  0000015F  C1 E1 10		shl ecx, 16
  00000162  66| 03 C8		add cx, ax
  00000165  89 0D 0105F9FA R	mov imageResolution, ecx
+
 				; Get amount of pixels (extended)
  0000016B  66| A1		mov ax, imageHeight
 	   0105F9F6 R
@@ -458,7 +458,7 @@ CreateFile.asm						     Page 1 - 1
  000001BE  BA 0188E82A R     1		mov	edx,OFFSET ??0011
  000001C3  E8 00000000 E     1		call	WriteString
  000001C8  5A		     1		pop	edx
- 000001C9  E9 0000034F			jmp quit ; and quit
+ 000001C9  E9 0000035B			jmp quit ; and quit
 					
  000001CE			file_ok_in:
 				; Read the file into a buffer.
@@ -499,7 +499,7 @@ CreateFile.asm						     Page 1 - 1
  000001FA  BA 0188E852 R     1		mov	edx,OFFSET ??0013
  000001FF  E8 00000000 E     1		call	WriteString
  00000204  5A		     1		pop	edx
- 00000205  E9 00000313			jmp quit
+ 00000205  E9 0000031F			jmp quit
 
  0000020A			buf_size_ok:
  0000020A  C6 80 00000043 R		mov imageArray[eax],0 ; insert null terminator
@@ -564,7 +564,7 @@ CreateFile.asm						     Page 1 - 1
  00000295  C6 05 0105FA0E R		mov sharpeningKernel[8], 0
 	   00
 					
- 0000029C			new_kernel_row:
+ 0000029C			new_kernel_column:
  0000029C  8B 1D 0105FA18 R		mov ebx, kernelRowOffset
  000002A2  03 1D 0105FA1C R		add ebx, kernelColumnOffset
  000002A8  03 1D 0105FA20 R		add ebx, imageRowOffset
@@ -578,29 +578,29 @@ CreateFile.asm						     Page 1 - 1
  000002CD  66| 01 05			add sum, ax
 	   0105FA0F R
  000002D4  FE 05 0105FA17 R		inc kernelCounter
- 000002DA  FE 05 0105FA15 R		inc kernelRowCounter
- 000002E0  80 3D 0105FA15 R		cmp kernelRowCounter, 3
+ 000002DA  FE 05 0105FA16 R		inc kernelColumnCounter
+ 000002E0  80 3D 0105FA16 R		cmp kernelColumnCounter, 3
 	   03
- 000002E7  74 08			je new_kernel_column
- 000002E9  FF 05 0105FA18 R		inc kernelRowOffset
- 000002EF  EB AB			jmp new_kernel_row
+ 000002E7  74 08			je new_kernel_row
+ 000002E9  FF 05 0105FA1C R		inc kernelColumnOffset
+ 000002EF  EB AB			jmp new_kernel_column
 
- 000002F1			new_kernel_column:
- 000002F1  FE 05 0105FA16 R		inc kernelColumnCounter
- 000002F7  80 3D 0105FA16 R		cmp kernelColumnCounter, 3
+ 000002F1			new_kernel_row:
+ 000002F1  FE 05 0105FA15 R		inc kernelRowCounter
+ 000002F7  80 3D 0105FA15 R		cmp kernelRowCounter, 3
 	   03
- 000002FE  74 24			je new_image_row
- 00000300  C7 05 0105FA18 R		mov kernelRowOffset, 0
+ 000002FE  74 24			je new_image_column
+ 00000300  C7 05 0105FA1C R		mov kernelColumnOffset, 0
 	   00000000
- 0000030A  C6 05 0105FA15 R		mov kernelRowCounter, 0
+ 0000030A  C6 05 0105FA16 R		mov kernelColumnCounter, 0
 	   00
  00000311  33 C0			xor eax, eax
  00000313  66| A1			mov ax, imageWidthExtended
 	   0105F9F4 R
- 00000319  01 05 0105FA1C R		add kernelColumnOffset, eax
- 0000031F  E9 FFFFFF78			jmp new_kernel_row
+ 00000319  01 05 0105FA18 R		add kernelRowOffset, eax
+ 0000031F  E9 FFFFFF78			jmp new_kernel_column
 
- 00000324			new_image_row:
+ 00000324			new_image_column:
  00000324  66| A1			mov ax, sum
 	   0105FA0F R
  0000032A  8B 1D 0105FA28 R		mov ebx, sharpenedImageCounter
@@ -635,34 +635,34 @@ CreateFile.asm						     Page 1 - 1
  00000385  66| C7 05			mov sum, 0
 	   0105FA0F R
 	   0000
- 0000038E  FF 05 0105FA20 R		inc imageRowOffset
+ 0000038E  FF 05 0105FA24 R		inc imageColumnOffset
  00000394  FF 05 0105FA28 R		inc sharpenedImageCounter
  0000039A  66| A1			mov ax, imageWidth
 	   0105F9F2 R
- 000003A0  66| FF 05			inc imageRowCounter
-	   0105FA11 R
- 000003A7  66| 39 05			cmp imageRowCounter, ax
-	   0105FA11 R
- 000003AE  0F 85 FFFFFEE8		jne new_kernel_row
-
- 000003B4			new_image_column:
- 000003B4  66| FF 05			inc imageColumnCounter
+ 000003A0  66| FF 05			inc imageColumnCounter
 	   0105FA13 R
+ 000003A7  66| 39 05			cmp imageColumnCounter, ax
+	   0105FA13 R
+ 000003AE  0F 85 FFFFFEE8		jne new_kernel_column
+
+ 000003B4			new_image_row:
+ 000003B4  66| FF 05			inc imageRowCounter
+	   0105FA11 R
  000003BB  66| A1			mov ax, imageHeight
 	   0105F9F6 R
- 000003C1  66| 39 05			cmp imageColumnCounter, ax
-	   0105FA13 R
- 000003C8  74 26			je sharpened
- 000003CA  66| C7 05			mov imageRowCounter, 0
+ 000003C1  66| 39 05			cmp imageRowCounter, ax
 	   0105FA11 R
+ 000003C8  74 26			je sharpened
+ 000003CA  66| C7 05			mov imageColumnCounter, 0
+	   0105FA13 R
 	   0000
- 000003D3  C7 05 0105FA20 R		mov imageRowOffset, 0
+ 000003D3  C7 05 0105FA24 R		mov imageColumnOffset, 0
 	   00000000
  000003DD  33 C0			xor eax, eax
  000003DF  66| A1			mov ax, imageWidthExtended
 	   0105F9F4 R
- 000003E5  01 05 0105FA24 R		add imageColumnOffset, eax
- 000003EB  E9 FFFFFEAC			jmp new_kernel_row
+ 000003E5  01 05 0105FA20 R		add imageRowOffset, eax
+ 000003EB  E9 FFFFFEAC			jmp new_kernel_column
 					
  000003F0			sharpened:
 				; ----------------------- WRITE FILE ------------------------
@@ -676,7 +676,7 @@ CreateFile.asm						     Page 1 - 1
  00000402  75 0F			jne	file_out_ok					; no: skip
  00000404  BA 0188E5E7 R		mov	edx,OFFSET str1Out			; display error
  00000409  E8 00000000 E		call	WriteString
- 0000040E  E9 0000010A			jmp	quit
+ 0000040E  E9 00000116			jmp	quit
  00000413			file_out_ok:
 				; Write the buffer to the output file.
  00000413  A1 0188E5DF R		mov	eax,fileHandleOut
@@ -689,7 +689,7 @@ CreateFile.asm						     Page 1 - 1
 					; Do the same process for oversharpening
  00000432  80 3D 0105FA2C R		cmp newImage, 1
 	   01
- 00000439  0F 84 000000DE		je quit
+ 00000439  0F 84 000000DE		je sharpening_successful
  0000043F  FE 05 0105FA2C R		inc newImage
 					; Change settings for oversharpening
  00000445  C6 05 0188E5CD R		mov	fileNameOut, "o"
@@ -752,9 +752,9 @@ CreateFile.asm						     Page 1 - 1
 	   00000000
  0000050E  C7 05 0188E5E3 R		mov bytesWrittenOut, 0
 	   00000000
- 00000518  E9 FFFFFD7F			jmp new_kernel_row
+ 00000518  E9 FFFFFDD4			jmp new_kernel_row
 
- 0000051D			quit:
+ 0000051D			sharpening_successful:
 					mWrite <"Sharpening and oversharpening successful!",0dh,0ah>
  0188E885		     1		.data		
  0188E885 53 68 61 72 70     1		??0015 BYTE "Sharpening and oversharpening successful!",0dh,0ah,0	
@@ -771,6 +771,7 @@ CreateFile.asm						     Page 1 - 1
  0000051E  BA 0188E885 R     1		mov	edx,OFFSET ??0015
  00000523  E8 00000000 E     1		call	WriteString
  00000528  5A		     1		pop	edx
+ 00000529			quit:
 					mWrite <"----------------------------------------------------------",0dh,0ah>
  0188E8B1		     1		.data		
  0188E8B1 2D 2D 2D 2D 2D     1		??0016 BYTE "----------------------------------------------------------",0dh,0ah,0	
@@ -796,7 +797,7 @@ CreateFile.asm						     Page 1 - 1
  00000537  E8 00000000 E   *	    call   ExitProcess
  0000053C			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/26/20 02:04:17
+Microsoft (R) Macro Assembler Version 14.25.28614.0	    05/27/20 01:22:48
 CreateFile.asm						     Symbols 2 - 1
 
 
@@ -1028,16 +1029,17 @@ main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000053C Public 
   buf_size_ok  . . . . . . . . .	L Near	 0000020A _TEXT	
   close_file . . . . . . . . . .	L Near	 00000227 _TEXT	
   convolution  . . . . . . . . .	L Near	 0000025D _TEXT	
-  new_kernel_row . . . . . . . .	L Near	 0000029C _TEXT	
-  new_kernel_column  . . . . . .	L Near	 000002F1 _TEXT	
-  new_image_row  . . . . . . . .	L Near	 00000324 _TEXT	
+  new_kernel_column  . . . . . .	L Near	 0000029C _TEXT	
+  new_kernel_row . . . . . . . .	L Near	 000002F1 _TEXT	
+  new_image_column . . . . . . .	L Near	 00000324 _TEXT	
   less_than_zero . . . . . . . .	L Near	 00000344 _TEXT	
   over_255 . . . . . . . . . . .	L Near	 0000034D _TEXT	
   sum_stored . . . . . . . . . .	L Near	 00000354 _TEXT	
-  new_image_column . . . . . . .	L Near	 000003B4 _TEXT	
+  new_image_row  . . . . . . . .	L Near	 000003B4 _TEXT	
   sharpened  . . . . . . . . . .	L Near	 000003F0 _TEXT	
   file_out_ok  . . . . . . . . .	L Near	 00000413 _TEXT	
-  quit . . . . . . . . . . . . .	L Near	 0000051D _TEXT	
+  sharpening_successful  . . . .	L Near	 0000051D _TEXT	
+  quit . . . . . . . . . . . . .	L Near	 00000529 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
