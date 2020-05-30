@@ -13,7 +13,6 @@ El presente repositorio contiene los archivos necesarios para realizar _sharpeni
 ### Si ya tiene GNU Octave instalado
 
 4. Abra GNU Octave.
-5. Abra la línea de comandos y ejecute el comando `pkg update`.
-6. Descargue el presente repositorio en su computadora en formato `.zip` .
-7. Descomprima el `.zip` y ejecute el script `imageSharpener.m`.
-8. Siga los pasos de la consola.
+5. Descargue el presente repositorio en su computadora en formato `.zip` .
+6. Descomprima el `.zip` y ejecute el script `imageSharpener.m`.
+7. Siga los pasos de la consola de Octave.
