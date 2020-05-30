@@ -18,3 +18,8 @@ El presente repositorio contiene los archivos necesarios para realizar _sharpeni
 7. Note que hay una carpeta llamada `InputImages`. Ahí debe poner todas las imágenes que guste, siempre y cuando estén en blanco y negro y tengan una dimensión menor que 3900x2200.
 8. Ejecute el script `imageSharpener.m`.
 9. Siga los pasos de la consola de Octave. Si tiene algún software de antivirus, es normal que reaccione ante un ejecutable desconocido. En caso de que se presente este problema, bríndele permisos al archivo desde el antivirus y finalice la ejecución.
+
+## Enlaces de interés
+
+- [Vídeo explicativo de la solución](https://www.youtube.com/watch?v=ST7ne5CjO6Y).
+- [Documentación del proyecto](https://www.dropbox.com/sh/qogz2rib8603tdh/AACHI31MQfCQ6p9d55bkkJ1qa?dl=0).
