@@ -1,6 +1,6 @@
 clear;
 disp("=====================================================================");
-[imageWidth, imageHeight] = imageToTxt();
+[imageWidth, imageHeight] = source("imageToTxt.m");
 disp("=====================================================================");
 disp("Calling assembly program...")
 system('Debug\Project.exe');
