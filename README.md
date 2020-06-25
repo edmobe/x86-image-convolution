@@ -1,6 +1,6 @@
 # Convolución de imágenes en x86
 
-El presente repositorio contiene los archivos necesarios para realizar _sharpening_ y _oversharpening_ a una imagen utilizando GNU Octave. **De momento este proyecto funciona solamente en Windows** y se recomienda que sea Windows 10 ya que ha sido el sistema operativo utilizado para las pruebas.
+El presente repositorio contiene los archivos necesarios para realizar _sharpening_ y _oversharpening_ a una imagen utilizando ensamblador (x86 con MASM) y GNU Octave. **De momento este proyecto funciona solamente en Windows** y se recomienda que sea Windows 10 ya que ha sido el sistema operativo utilizado para las pruebas.
 
 ## ¿Cómo ejecutar el programa?
 
