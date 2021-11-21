@@ -1,5 +1,5 @@
 # x86 Assembly Image Convultion Algorithm
-This algorithm sharpens and oversharpens an image using x86 Assembly using MASM. The user interface is developed in GNU Octave.
+This algorithm sharpens and oversharpens an image using x86 MASM Assembly . The user interface is developed in GNU Octave.
 
 ## Results
 ### Original image
