@@ -34,4 +34,4 @@ El presente repositorio contiene los archivos necesarios para realizar _sharpeni
 ## Enlaces de interés
 
 - [Vídeo explicativo de la solución](https://www.youtube.com/watch?v=ST7ne5CjO6Y).
-- [Documentación del proyecto](https://www.dropbox.com/sh/qogz2rib8603tdh/AACHI31MQfCQ6p9d55bkkJ1qa?dl=0).
+- [Documentación del proyecto](https://drive.google.com/drive/folders/1rFqxQqqe2WJMs9ty6HVIxmrD4tSxcN1H?usp=drive_link).
